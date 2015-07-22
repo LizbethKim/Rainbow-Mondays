@@ -4,20 +4,78 @@
 <meta charset="UTF-8">
 <title>Rainbow Mondays</title>
 <link rel="stylesheet" href="style.css">
-<script type="text/javascript"
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmUciLfWiLr7WAyiN4Klfr6iIfSVk25A8">
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmUciLfWiLr7WAyiN4Klfr6iIfSVk25A8">!-->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
 </script>
-<script type="text/javascript">
-  function initialize() {
-    var mapOptions = {
-      center: { lat: -41.397, lng: 174.644},
-      zoom: 8,
-      mapTypeId: google.maps.MapTypeId.SATELLITE
-      
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
-	mapOptions);
-  }
+<script>
+// Adding 500 Data Points
+var map, pointarray, heatmap;
+
+var taxiData = [
+  new google.maps.LatLng(-41.289468,-122.445368),
+  {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
+  new google.maps.LatLng(37.782, -122.445),
+  {location: new google.maps.LatLng(37.782, -122.443), weight: 2},
+  {location: new google.maps.LatLng(37.782, -122.441), weight: 3},
+  {location: new google.maps.LatLng(37.782, -122.439), weight: 20},
+  new google.maps.LatLng(37.782, -122.437),
+  {location: new google.maps.LatLng(37.782, -122.435), weight: 0.5},
+
+  {location: new google.maps.LatLng(37.785, -122.447), weight: 3},
+  {location: new google.maps.LatLng(37.785, -122.445), weight: 2},
+  new google.maps.LatLng(37.785, -122.443),
+  {location: new google.maps.LatLng(37.785, -122.441), weight: 0.5},
+  new google.maps.LatLng(37.785, -122.439),
+  {location: new google.maps.LatLng(37.785, -122.437), weight: 2},
+  {location: new google.maps.LatLng(37.785, -122.435), weight: 3}
+
+];
+
+function initialize() {
+  var sanFran = new google.maps.LatLng(37.774546, -122.433523);
+
+  var mapOptions = {
+    zoom: 13,
+    center: sanFran,
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var pointArray = new google.maps.MVCArray(taxiData);
+
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: pointArray
+  });
+
+  heatmap.setMap(map);
+}
+
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
+
   google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 </head>
