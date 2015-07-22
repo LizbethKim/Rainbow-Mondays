@@ -18,17 +18,17 @@ var map, layer;
 
 function initialize() {
 
-  var australia = new google.maps.LatLng(-41, 144);
+  var nz = new google.maps.LatLng(-41, 174);
 
   map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: australia,
+    center: nz,
     zoom: 4
   });
 
   layer = new google.maps.FusionTablesLayer({
     query: {
       select: 'geometry',
-      from: '1ertEwm-1bMBhpEwHhtNYT47HQ9k2ki_6sRa-UQ'
+      from: '1-941Px73b_XWWn3pmPHKp6WhbbSVNiEmKMadwe0'
     },
     styles: [{
       polygonOptions: {
