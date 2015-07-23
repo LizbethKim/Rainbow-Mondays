@@ -8,19 +8,20 @@
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
   <script src="js\jquery-2.1.4.min.js"> </script>
     <script>
-
-         function test() {
-             console.log("This is testing");
+         $(function () {
+			console.log("This is testing");
              $.ajax({
                  url: "http://rainbowmonday.co.nz/api/",
-                 statusCode: {
-                     500: function one() { alert("failed")
-                     }
-                 },
-                 success: {}
-             }).done(function (data) { /* update page here */
+                 success: dataHandle
              });
-         }
+		 });
+		 
+		 
+	function dataHandle(data){
+	
+	
+	
+	}	 
   </script>
 
 
