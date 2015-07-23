@@ -6,12 +6,35 @@
 <link rel="stylesheet" href="style.css">
 <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmUciLfWiLr7WAyiN4Klfr6iIfSVk25A8">!-->
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-</script>
-<script>
+  <script src="js\jquery-2.1.4.min.js"> </script>
+    <script>
+
+         function test() {
+             console.log("This is testing");
+             $.ajax({
+                 url: "http://rainbowmonday.co.nz/api/",
+                 statusCode: {
+                     500: function one() { alert("failed")
+                     }
+                 },
+                 success: {}
+             }).done(function (data) { /* update page here */
+             });
+         }
+  </script>
+
+
+
+  <script>
 // Adding 500 Data Points
 var map, pointarray, heatmap;
 
+var s = "new";
+var newData =[s +google.maps.LatLng(-41.289468,-122.445368),
+    s + google.maps.LatLng(37.782, -122.445),];
+
 var taxiData = [
+
   new google.maps.LatLng(-41.289468,-122.445368),
   {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
   new google.maps.LatLng(37.782, -122.445),
