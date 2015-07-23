@@ -22,3 +22,11 @@ function find(fun, list){
   }
   return undefined;
 }
+
+function parseData(list){
+  var ret = [];
+  for (var i = 0; i < list.length; i++){
+    ret.push({"location": eval("new google.maps.LatLng(" + list[i].latitude + "," + list[i].longitude + ")"), "weight":list[i].count});
+  }
+  return ret;
+}
