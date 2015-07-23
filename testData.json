@@ -1,0 +1,85 @@
+region 
+district 
+lang
+lut
+
+[
+    {
+     "region" : "Wellington", 
+     "district" : "Wellington City", 
+     "longitude" : "174.776236", 
+     "latitude" : "-41.286460", 
+     "count" : "1000"
+    },
+    {
+     "region" : "Northland", 
+     "district" : "Kaipara", 
+     "longitude" : "174.979741", 
+     "latitude" : "-37.058311", 
+     "count" : "300"  
+    },
+    {
+     "region" : "Auckland", 
+     "district" : "Auckland City", 
+     "longitude" : "174.763332", 
+     "latitude" : "-36.848460", 
+     "count" : "1200"  
+    },
+    {
+     "region" : "Waikato", 
+     "district" : "Hamilton", 
+     "longitude" : "175.279253", 
+     "latitude" : "-37.787001", 
+     "count" : "500"  
+    },
+    {
+     "region" : "Bay Of Plenty", 
+     "district" : "Rotorua", 
+     "longitude" : "176.249746", 
+     "latitude" : "-38.136848", 
+     "count" : "250"  
+    },
+    {
+     "region" : "Gisborne", 
+     "district" : "Gisborne", 
+     "longitude" : "178.017649", 
+     "latitude" : "-38.662334", 
+     "count" : "275"  
+    },
+    {
+     "region" : "Hawke's Bay", 
+     "district" : "Napier", 
+     "longitude" : "176.912018", 
+     "latitude" : "-39.492844", 
+     "count" : "175"  
+    },
+    {
+     "region" : "Taranaki", 
+     "district" : "New Plymouth", 
+     "longitude" : "174.075228", 
+     "latitude" : "-39.055625", 
+     "count" : "175"  
+    },
+    {
+     "region" : "Manawatu / Wanganui", 
+     "district" : "Wanganui", 
+     "longitude" : "175.047890", 
+     "latitude" : "-39.930089", 
+     "count" : "400"  
+    },
+    {
+     "region" : "Nelson / Tasman", 
+     "district" : "Nelson", 
+     "longitude" : "173.283965", 
+     "latitude" : "-41.270632", 
+     "count" : "375"  
+    },
+    {
+     "region" : "Otago", 
+     "district" : "Dunedin", 
+     "longitude" : "170.502798", 
+     "latitude" : "-45.878760", 
+     "count" : "550"  
+    }
+    
+]
