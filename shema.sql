@@ -51,3 +51,8 @@ CREATE TABLE `jobs` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 -- Dump completed on 2015-07-23 14:24:34
+
+
+CREATE USER 'rainbowmondays'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'rainbowmondays'@'localhost';
+FLUSH PRIVILEGES;
