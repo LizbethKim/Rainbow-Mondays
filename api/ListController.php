@@ -21,6 +21,6 @@ class ListController extends Controller {
                 'count' => 1
             );
         }
-        return json_encode($build);
+        return $build;
     }
 }
