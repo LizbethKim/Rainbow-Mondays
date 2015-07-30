@@ -43,10 +43,11 @@ var bounds=  new google.maps.LatLngBounds();
 
 function initialize() {
   var nz = {lat:-41, lng:174};
+  var kdf = {lat:0,lng:0}
   
   var mapOptions = {
     zoom: zoom,
-    center: nz,
+    center: kdf,
     mapTypeId: google.maps.MapTypeId.MAP,
     zoomControl: true,
     streetViewControl: false,
@@ -68,31 +69,12 @@ function initialize() {
   });
   
   google.maps.event.addListener(map, 'zoom_changed', function() {
-    console.log(window.screen.availHeight +"," +
-window.screen.availWidth)
-    
+  
   });
-
   
 
  
-  heatmap.setMap(map);
-  
-  heatmap.fitbounds(bounds)
-  
-    var geoCoder = new GClientGeocoder();
-  geoCoder.setViewport(map.getBounds());
-  geoCoder.getLocations('searchquery', function(latlng) {
-  if( latlng.Placemark.length > 0 ) {
-    var box = latlng.Placemark[0].ExtendedData.LatLonBox;
-    var bounds = new GLatLngBounds(new GLatLng(box.south, box.west), new GLatLng(box.north, box.east));
-    var center = new GLatLng(box.Placemark[0].Point.coordinates[1], latlng.Placemark[0].Point.coordinates[0]);
-    var zoom = oMap.getBoundsZoomLevel(bounds);
-    map.setCenter(center, zoom);
-  }
-});
-  
-  
+  heatmap.setMap(map); 
   
   
   }
