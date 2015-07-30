@@ -80,4 +80,11 @@ class DAO {
         return((bool)$this->query($query));
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function escape($string) {
+        return(mysqli_real_escape_string(self::$mysqlLink, $string));
+    }
 }
