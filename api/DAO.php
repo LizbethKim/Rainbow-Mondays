@@ -45,7 +45,17 @@ class DAO {
         if(is_bool($result)) {
             return($result);
         } else {
-            return($result->fetch_all(MYSQLI_ASSOC));
+            $rows = [];
+            while(true){
+                $row = $result->fetch_assoc();
+                if($row) {
+                    $rows[] = $row;
+                } else {
+                    break;
+                }
+            }
+            $result->free();
+            return($rows);
         }
     }
 
@@ -61,7 +71,7 @@ class DAO {
         $keys = array_keys($dataset);
         $values = array();
         foreach($keys as $key) {
-            $values[] = mysql_real_escape_string($dataset[$key]);
+            $values[] = mysqli_real_escape_string(self::$mysqlLink, $dataset[$key]);
         }
         $values = "'" . implode('\',\'', $values) . "'";
 
@@ -70,4 +80,11 @@ class DAO {
         return((bool)$this->query($query));
     }
 
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function escape($string) {
+        return(mysqli_real_escape_string(self::$mysqlLink, $string));
+    }
 }
