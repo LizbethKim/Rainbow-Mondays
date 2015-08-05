@@ -1,0 +1,22 @@
+*{
+  margin:0;
+  padding:0
+}
+
+html{
+  height:100%;
+}
+  
+body{
+  background-color:#232829;
+  height:100%;
+}
+
+#title{
+  color:#ffffff
+}
+
+#map-canvas { 
+height: 90%; 
+margin: 0; 
+padding: 0;}
