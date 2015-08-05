@@ -1,7 +1,12 @@
 <?php
+/**
+ * @param $className
+ * @return bool
+ */
 function __autoload($className) {
-    if(file_exists($className . '.php')) {
-        include($className . '.php');
+    $fname = dirname(__FILE__) . '/' . $className . '.php';
+    if(file_exists($fname)) {
+        include($fname);
     }
     return(class_exists($className));
 }
