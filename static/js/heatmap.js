@@ -1,23 +1,18 @@
 $(function () {
-    var map, heatmap;
-
-    var mapOptions = {
+    var map, heatmap, mapOptions = {
         zoom: 6,
         center: new google.maps.LatLng(-41, 174),
         mapTypeId: google.maps.MapTypeId.MAP
+    }, getFilters = function () {
+        return({
+            category: $('#category-selection').val()
+        });
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-    console.log(map);
     $.ajax({
         url: '/api/list',
-        parms: {
-
-        },
         success: updateData
     });
-
-
-
     function updateData(rawData) {
         var build = [];
         $(rawData).each(function () {
@@ -29,9 +24,18 @@ $(function () {
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: pointArray
             });
+            heatmap.setMap(map);
         } else {
-            heatmap.setData(rawData);
+            heatmap.setData(pointArray);
         }
-        heatmap.setMap(map);
+
     }
+    $('#submit-button').click(function () {
+        $.ajax({
+            url: '/api/list',
+            data: getFilters(),
+            method: 'post',
+            success: updateData
+        });
+    });
 });

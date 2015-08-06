@@ -7,7 +7,6 @@
  */
 interface Job {
     public function __construct(array $dataset);
-
     /**
      * @return int
      */
@@ -27,4 +26,10 @@ interface Job {
      * @return array
      */
     public function getDataset();
+
+    /**
+     * @return string
+     *
+     */
+    public function getCategory();
 }
