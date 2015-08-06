@@ -74,3 +74,11 @@ CREATE TABLE `jobs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=54186 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+CREATE TABLE rainbowmondays.batches
+(
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    batchId INT NOT NULL,
+    date INT NOT NULL
+);

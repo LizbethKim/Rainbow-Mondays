@@ -10,12 +10,15 @@ $api->runQuery();
 $daoJobs = new DAO('jobs');
 $batchId = (int)$daoJobs->query("select max(batchid) as batchId from jobs")[0]['batchId'] + 1;
 
+$daoBatch = new DAO('batches');
+$daoBatch->insert(array(
+    'batchId' => $batchId,
+    'date' => time()
+));
+
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
     $dataset['batchId'] = (int)$batchId;
     $daoJobs->insert($dataset);
-    echo("Listing id: $listingId, title: " . $job->getTitle()
-        . ", Location ID: " . $job->getLocationId()
-        . ", Category: " . $job->getCategory()
-        . "\n");
+    echo("Listing id: $listingId, title: " . $job->getTitle());
 }
