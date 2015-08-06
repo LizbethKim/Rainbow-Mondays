@@ -19,6 +19,14 @@ class TrademeJobsApi implements JobHost {
     /** @var int */
     private $currentPageSize;
 
+    private static $daoJobsCategories;
+
+    public function __construct() {
+        if(self::$daoJobsCategories == null) {
+            self::$daoJobsCategories = new DAO('categories');
+        }
+    }
+
     /**
      * (PHP 5 >= 5.0.0)<br/>
      * Return the current element
@@ -229,6 +237,35 @@ class TrademeJobsApi implements JobHost {
             $this->parms['page'] = 0;
         }
         return((int)$this->parms['page']);
+    }
+
+    /**
+     * update all of the job categories in the database.
+     * @return array
+     */
+    public function updateJobCategories() {
+        self::$daoJobsCategories->query("truncate categories;");
+        $categories = json_decode(file_get_contents("https://api.trademe.co.nz/v1/Categories/Jobs.json"), true);
+        $this->saveJobCategories(null, $categories);
+    }
+
+    /**
+     * Save all of the jobs in $jobs
+     * @param $parentId
+     * @param $jobs
+     */
+    private function saveJobCategories($parentId, $jobs) {
+        foreach($jobs as $job) {
+            $dataset = array(
+                'categoryName' => $job['Name'],
+                'categoryId' => (int)$job['Code'],
+                'parentCategoryId' => (int)$parentId
+            );
+            self::$daoJobsCategories->insert($dataset);
+            if(isset($job['SubCategories']) && is_array($job['SubCategories'])) {
+                $this->saveJobCategories((int)$job['Code'], $job['SubCategories']);
+            }
+        }
     }
 }
 
