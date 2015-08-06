@@ -104,8 +104,8 @@ class Jobs {
             $t = rand(0, M_PI * 200) / 100;
 
             $build[] = array(
-                'longitude'=> $locations[$job['locationId']]['longitude'] + (sin($t) * $r),
-                'latitude'=> $locations[$job['locationId']]['latitude'] + (cos($t) * $r),
+                'longitude'=> $locations[$job['locationId']]['longitude'], // + (sin($t) * $r),
+                'latitude'=> $locations[$job['locationId']]['latitude'], // + (cos($t) * $r),
                 'count' => 1
             );
         }
