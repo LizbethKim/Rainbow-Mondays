@@ -25,6 +25,7 @@ $(function () {
                 data: pointArray
             });
             heatmap.setMap(map);
+            heatmap.set('radius', 50);
         } else {
             heatmap.setData(pointArray);
         }
