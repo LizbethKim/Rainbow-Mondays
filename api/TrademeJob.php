@@ -8,9 +8,12 @@
 class TrademeJob implements Job {
     /** @var DAO */
     private static $daoJobs;
+    /** @var DAO */
+    private static $daoCategories;
     /** @var array */
     private static $locationCache = array();
-
+    /** @var array */
+    private static $categoriesCache = array();
     /** @var  array */
     private $dataset;
 
@@ -18,6 +21,9 @@ class TrademeJob implements Job {
         $this->dataset = $dataset;
         if(self::$daoJobs === null) {
             self::$daoJobs = new DAO('jobs');
+        }
+        if(self::$daoCategories === null) {
+            self::$daoCategories = new DAO('categories');
         }
     }
 
@@ -65,13 +71,52 @@ class TrademeJob implements Job {
     }
 
     /**
+     * Retrieve the job category id from the category string.
+     * If it is not in the database, insert it and return the insert id
+     * @param int $parentLevel
+     * @return int
+     * @throws Exception
+     */
+    private function getCategoryId($parentLevel = 0) {
+        $categories = explode('-', $this->dataset['Category']);
+        $offset = count($categories) - 2 - $parentLevel;
+        if($offset < 0) {
+            throw new Exception("Could not find category");
+        }
+        $category = (int) $categories[$offset];
+        if(isset(self::$categoriesCache[$category])) {
+            return(self::$categoriesCache[$category]);
+        } else {
+            $result = self::$daoCategories->query("SELECT id FROM categories WHERE categoryId = $category");
+            if(is_array($result) && count($result) > 0) {
+                self::$categoriesCache[$category] = $result[0]['id'];
+                return $result[0]['id'];
+            }
+            return($this->getCategoryId($parentLevel + 1));
+        }
+    }
+    /**
      * @return array
      */
     public function getDataset() {
         $build = array(
             'jobId' => $this->getId(),
-            'locationId' => $this->getLocationId()
+            'locationId' => $this->getLocationId(),
+            'categoryId' => $this->getCategoryId()
         );
         return($build);
+    }
+
+    /**
+     * Get the textual name of a category
+     * @return string
+     */
+    public function getCategory() {
+        $result = self::$daoCategories->query("select categoryName from categories where id = " . $this->getCategoryId());
+        if(is_array($result) && count($result) > 0) {
+            return($result[0]['categoryName']);
+        } else {
+            return('Unknown Category');
+        }
     }
 }
