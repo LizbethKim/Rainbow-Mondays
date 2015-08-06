@@ -10,10 +10,6 @@ $api->runQuery();
 $daoJobs = new DAO('jobs');
 $batchId = (int)$daoJobs->query("select max(batchid) as batchId from jobs")[0]['batchId'] + 1;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> UI
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
     $dataset['batchId'] = (int)$batchId;
