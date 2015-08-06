@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Trademe Jobs Locationator</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  	<link rel="stylesheet" type="text/css" href="style.css">
+  	<script src="static/js/jquery-2.1.4.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+  	<script src="filters.js" type="text/javascript"></script>
+  	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
+    <script src="static/js/heatmap.js"></script>
+	<script>
+
+	function initialize() {
+	  var mapProp = {
+	    center:new google.maps.LatLng(51.508742,-0.120850),
+	    zoom:5,
+	    mapTypeId:google.maps.MapTypeId.ROADMAP
+	  };
+	  var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+	  
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+
+	$.ajax({
+		url: "http://rainbowmondays.co.nz/api/category",
+		method: "GET",
+		success: function(catagories){
+			console.log("Catagories: " + catagories);
+		}
+	});
+
+	// $.ajax({
+	// 	url: "rainbowmondays.co.nz/api/subcategory",
+	// 	method: "GET",
+	// 	data: "Accounting",
+	// 	success: function(subcatagories){
+	// 		console.log("Subcatagories: " + subcatagories);
+	// 	}
+	// });
+
+	// $.ajax({
+	// 	url: "rainbowmondays.co.nz/api/region",
+	// 	method: "GET",
+	// 	success: function(regions){
+	// 		console.log("Regions: " + regions);
+	// 	}
+	// });
+
+	// $.ajax({
+	// 	url: "rainbowmondays.co.nz/api/district",
+	// 	method: "GET",
+	// 	data: "Northland"
+	// 	success: function(districts){
+	// 		console.log("Districts: " + districts);
+	// 	}
+	// });
+
+	function updateSubcatagory(){
+
+	}
+
+	</script>
+
+	<script>
+	  $(function() {
+	    $( "#slider-range" ).slider({
+	      range: true,
+	      min: 0,
+	      max: 500,
+	      values: [ 75, 300 ],
+	      slide: function( event, ui ) {
+	        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+	      }
+	    });
+	    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+	      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	  });
+	</script>
+
+	  <script>
+	  $(function() {
+	    $( "#slider-range" ).slider({
+	      range: true,
+	      min: 0,
+	      max: 500,
+	      values: [ 75, 300 ],
+	      slide: function( event, ui ) {
+	        $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+	      }
+	    });
+	    $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+	      " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+	  });
+	  </script>
+	  
+</head>
+
+<body>
+
+	<div class="container">
+	 	<div class="jumbotron container">
+	    	<h3 class="bannerTitle">Trademe Jobs Locationator</h3>
+	  	</div>
+
+		<div class="row">
+		  	<div class="col-sm-3">
+		    	<div class="sidebar-nav">
+		      		<div class="navbar navbar-default" role="navigation">
+				        <div class="navbar-header">
+				          	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+				            	<span class="sr-only">Toggle navigation</span>
+				            	<span class="icon-bar"></span>
+				            	<span class="icon-bar"></span>
+				            	<span class="icon-bar"></span>
+				          	</button>
+				          	<span class="visible-xs navbar-brand">Sidebar menu</span>
+		        		</div>
+		        		<div class="navbar-collapse collapse sidebar-navbar-collapse">
+					        <ul class="nav navbar-nav">
+					            <li class="dropdown">
+					              	<div class="btn-group">
+					                	<button type="button" class="btn btn-default dropdown-toggle filterOption" data-toggle="dropdown">Catagory<span class="caret"></span></button>
+
+						                <ul class="dropdown-menu scrollable-menu" role="menu">
+						                    <li><a href="#">Action</a></li>
+						                    <li><a href="#">Another action</a></li>
+						                    <li><a href="#">Something else here</a></li>
+						                </ul>
+					            	</div>
+					            </li>
+					            <li class="dropdown">
+					              	<div class="btn-group">
+					                	<button type="button" class="btn btn-default dropdown-toggle filterOption" data-toggle="dropdown ">Subcatagory<span class="caret"></span></button>
+
+						                <ul class="dropdown-menu scrollable-menu" role="menu">
+						                    <li><a href="#">Action</a></li>
+						                    <li><a href="#">Another action</a></li>
+						                    <li><a href="#">Something else here</a></li>
+						                </ul>
+					            	</div>
+					            </li>
+					            <li class="dropdown">
+					              	<div class="btn-group">
+					                	<button type="button" class="btn btn-default dropdown-toggle filterOption" data-toggle="dropdown">Region<span class="caret"></span></button>
+						                <ul class="dropdown-menu scrollable-menu" role="menu">
+						                    <li><a href="#">Actdion</a></li>
+						                    <li><a href="#">Anotdher action</a></li>
+						                    <li><a href="#">Sometddddhing else here</a></li>
+						                </ul>
+					            	</div>
+					            </li>
+					            <li class="dropdown">
+					              	<div class="btn-group">
+					                	<button type="button" class="btn btn-default dropdown-toggle filterOption" data-toggle="dropdown">District<span class="caret"></span></button>
+						                <ul class="dropdown-menu scrollable-menu" role="menu">
+						                    <li><a href="#">Action</a></li>
+						                    <li><a href="#">Another action</a></li>
+						                    <li><a href="#">Something else here</a></li>
+						                </ul>
+					            	</div>
+					            </li>
+					            <li class="filterRadio filterOption"><h5>Job Type</h5>
+					            	<label class="radio"><input type="radio" name="timeradio"><h6>Part Time</h6></label>
+									<label class="radio"><input type="radio" name="timeradio"><h6>Full Time</h6></label>
+									<label class="radio"><input type="radio" name="timeradio"><h6>Any</h6></label> 
+					            </li>
+					            <li class="filterRadio filterOption"><h5>Job Duration</h5>
+					            	<label class="radio"><input type="radio" name="lengthradio"><h6>Temporary</h6></label>
+									<label class="radio"><input type="radio" name="lengthradio"><h6>Permanent</h6></label>
+									<label class="radio"><input type="radio" name="lengthradio"><h6>Any</label> 
+					            </li>
+					            <li class="filterRadio filterOption"><h5>Pay Type</h5>
+					            	<label class="radio"><input type="radio" name="payradio"><h6>Salary</h6></label>
+									<label class="radio"><input type="radio" name="payradio"><h6>Hourly</h6></label>
+									<label class="radio"><input type="radio" name="payradio"><h6>Any</h6></label> 
+					            </li>
+					            <li> 
+					            	
+					            </li>
+		            			<li><a href="#">Reviews <span class="badge">1,118</span></a></li>
+		          			</ul>
+		        		</div><!--/.nav-collapse -->
+		      		</div>
+		    	</div>
+		  	</div>
+		  	<div class="col-sm-9">
+		  		
+				  	
+			  	<div class="row">
+			  		<!--<div id="googleMap" style="width:500px;height:380px;"></div>-->
+			  		<div id="map-canvas"></div>
+			  	</div>
+
+			  	<div class="row">
+			    	<div class="col-sm-4">
+			      		<h3>Column 1</h3>
+			      		<p>CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT</p>
+			    	</div>
+			    	<div class="col-sm-4">
+			      		<h3>Column 2</h3>
+			      		<p>CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT</p>
+			    	</div>
+				    <div class="col-sm-4">
+				      	<h3>Column 3</h3>        
+				      	<p>CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT CONTENT</p>
+				    </div>
+			  	</div>
+				
+		 	</div>
+		</div>
+	</div>
+
+	
+</body>
+
+</html>

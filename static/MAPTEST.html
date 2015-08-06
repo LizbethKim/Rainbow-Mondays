@@ -29,7 +29,7 @@
   <script>
 // Adding 500 Data Points 
 var map, pointarray, heatmap;
-var zoom =8;
+var zoom =6;
 var s = "new";
 var newData =[s +google.maps.LatLng(-41.289468,-122.445368),
     s + google.maps.LatLng(37.782, -122.445),];
@@ -54,8 +54,8 @@ function initialize() {
     draggable: true,
     scrollwheel: true,
     panControl: true,
-    //maxZoom: zoom,
-    //minZoom: zoom,
+    maxZoom: 14,
+    minZoom: zoom,
   };
 
   map = new google.maps.Map(document.getElementById('map-canvas'),
