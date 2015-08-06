@@ -1,0 +1,31 @@
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+
+.bannerTitle{
+	font-family: 'Lobster';
+	margin: 30px;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
+.jumbotron{
+	margin-bottom: 5px;
+	padding: 0;
+	text-align: center;
+	/*border-style: sol0
+	border-width: 3px;*/
+}
+
+.navbar-collapse{
+	padding-top: 5px;
+	padding-left: 25px;
+}
+
+
+
+
+
+
