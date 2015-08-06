@@ -94,7 +94,7 @@ class Jobs {
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
-        $jobs = $daoJobs->query("select * from jobs where batchId = (select max(batchId) from jobs) {$conditions}");
+        $jobs = $daoJobs->query("select * from jobs where batchId = (select max(batchId) from batches) {$conditions}");
 
 
         $build = [];
