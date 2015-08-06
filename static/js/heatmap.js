@@ -1,10 +1,7 @@
-$(function () {
-    var map, heatmap;
-    var zoom =6;
-    var nz = new google.maps.LatLng(-41, 174);
-    var mapOptions = {
+$(function () {    
+     var map,zoom=6,nz = new google.maps.LatLng(-41, 174), heatmap, mapOptions = {
         zoom: zoom,
-        center: nz,
+        center: new google.maps.LatLng(-41, 174),
         mapTypeId: google.maps.MapTypeId.MAP,
 	zoomControl: true,
 	streetViewControl: false,
@@ -13,9 +10,21 @@ $(function () {
 	panControl: true,
 	maxZoom: 13,
 	minZoom: zoom,
+    }, getFilters = function () {
+        return({
+            category: $('#category-selection').val()
+        });
     };
+    
+    
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
+     $.ajax({
+        url: '/api/list',
+        success: updateData
+    });
+    
+    
     // Create the DIV to hold the control and
     // call the CenterControl() constructor passing
     // in this DIV.
@@ -58,9 +67,6 @@ $(function () {
         },
         success: updateData
     });
-
-
-
     function updateData(rawData) {
         var build = [];
         $(rawData).each(function () {
@@ -74,12 +80,21 @@ $(function () {
             heatmap = new google.maps.visualization.HeatmapLayer({
                 data: pointArray
             });
+            heatmap.setMap(map);
+            heatmap.set('radius', 50);
         } else {
-            heatmap.setData(rawData);
+            heatmap.setData(pointArray);
         }
         heatmap.setMap(map);
     }
-    
+    $('#submit-button').click(function () {
+        $.ajax({
+            url: '/api/list',
+            data: getFilters(),
+            method: 'post',
+            success: updateData
+        });
+    });
     /**
  * The CenterControl adds a control to the map that recenters the map
  * on Chicago.
@@ -129,11 +144,14 @@ function CenterControl(controlDiv, map, center) {
     map.setCenter(currentCenter);
   });
 
-}
+}   
+    
+    
 
-    
-    
-    
-    
+        heatmap = new google.maps.visualization.HeatmapLayer({
+            data: pointArray
+        });
+        heatmap.setMap(map);
+    }
     
 });
