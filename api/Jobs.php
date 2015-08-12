@@ -94,19 +94,16 @@ class Jobs {
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
-        $jobs = $daoJobs->query("select * from jobs where batchId = (select max(batchId) from batches) {$conditions}");
+        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = (select max(batchId) from batches) {$conditions} group by locationId");
+
 
 
         $build = [];
         foreach($jobs as $job) {
-            srand($job['jobId']);
-            $r = (rand(-100000, 100000) / 100000) / 10;
-            $t = rand(0, M_PI * 200) / 100;
-
             $build[] = array(
-                'longitude'=> $locations[$job['locationId']]['longitude'], // + (sin($t) * $r),
-                'latitude'=> $locations[$job['locationId']]['latitude'], // + (cos($t) * $r),
-                'count' => 1
+                'longitude'=> $locations[$job['locationId']]['longitude'],
+                'latitude'=> $locations[$job['locationId']]['latitude'],
+                'count' => $job['count']
             );
         }
         return($build);
