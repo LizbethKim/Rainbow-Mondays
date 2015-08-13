@@ -11,8 +11,9 @@ class Controller {
         $build = array();
         foreach($result as $category) {
             $build[] = array(
-                'id'=> $category['id'],
-                'name'=> $category['categoryName']
+                'id'=> (int)$category['id'],
+                'name'=> $category['categoryName'],
+                'parentCategory' => (int)$category['parentCategoryId']
             );
         }
         return($build);

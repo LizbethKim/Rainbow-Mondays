@@ -49,14 +49,13 @@ class Jobs {
     }
 
     /**
-     * @param $categoryId
+     * @param $categoryId - Trademe category id
      * @return array<int>
      */
     private function getSubCategories($categoryId) {
         $build = array();
         $dao = self::$daoCategories;
-        $tmCategoryId = (int)$dao->query("select categoryId from categories where id = {$categoryId}")[0]['categoryId'];
-        $result = $dao->query("SELECT id from categories where parentCategoryId = {$tmCategoryId}");
+        $result = $dao->query("SELECT id from categories where parentCategoryId = {$categoryId}");
         if(is_array($result) && count($result)) {
             foreach($result as $category) {
                 $build[] = (int)$category['id'];
@@ -70,18 +69,20 @@ class Jobs {
     }
 
     /**
-     * @return array
+     * @return string
      */
     private function getSelectCriteria() {
-        $conditions = array();
+        $categories = array();
         if(isset($this->filters['category']) && (int)$this->filters['category'] > 0) {
             $category = (int)$this->filters['category'];
-            $categories = $this->getSubCategories($category);
+            $categories = array_merge($categories, $this->getSubCategories($category));
             $categories[] = $category;
-            $conditions[] = 'categoryId in (' . implode(',', $categories) . ')';
         }
-
-        return($conditions);
+        if(count($categories)) {
+            return('categoryId in (' . implode(',', $categories) . ')');
+        } else {
+            return('');
+        }
     }
     /**
      * @throws Exception
@@ -90,13 +91,11 @@ class Jobs {
         $daoJobs = self::$daoJobs;
         $daoJobs->query("Select * from jobs");
         $locations = $this->getAllDistricts();
-        $conditions = implode(' and ', $this->getSelectCriteria());
+        $conditions = $this->getSelectCriteria();
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
         $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = (select max(batchId) from batches) {$conditions} group by locationId");
-
-
 
         $build = [];
         foreach($jobs as $job) {
