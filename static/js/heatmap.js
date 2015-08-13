@@ -13,24 +13,24 @@ $(function () {
         disableDefaultUI: true,
         panControl: true,
         maxZoom: 11,
-        minZoom: zoom,
-        styles: [{
+        minZoom: zoom//,
+        /*styles: [{
             "stylers": [
-                {"visibility": "off"}
+                {
+                    "visibility": "off"
+                }
             ]
         }, {
             "featureType": "administrative",
-            "stylers": [
-                {"visibility": "simplified"}
-            ]
+            "stylers": [{
+                "visibility": "simplified"
+            }]
         }, {
             "featureType": "water",
-            "stylers": [
-                {"visibility": "simplified"}
-            ]
-        }, {}
-        ]
-
+            "stylers": [{
+                "visibility": "simplified"
+            }]
+        }]*/
     }, getFilters = function () {
         return ({
             category: $('#category-selection').val()

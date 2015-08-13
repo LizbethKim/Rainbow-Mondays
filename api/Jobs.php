@@ -96,7 +96,6 @@ class Jobs {
      */
     function getJobs() {
         $daoJobs = self::$daoJobs;
-        $daoJobs->query("Select * from jobs");
         $locations = $this->getAllDistricts();
         $conditions = $this->getSelectCriteria();
         if(strlen($conditions) > 0) {
