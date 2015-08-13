@@ -12,9 +12,30 @@ $(function () {
         scrollwheel: true,
         disableDefaultUI: true,
         panControl: true,
-        maxZoom: 13,
-        minZoom: zoom
-    }, updateData = function(rawData) {
+        maxZoom: 11,
+        minZoom: zoom,
+        styles: [{
+            "stylers": [
+                {"visibility": "off"}
+            ]
+        }, {
+            "featureType": "administrative",
+            "stylers": [
+                {"visibility": "simplified"}
+            ]
+        }, {
+            "featureType": "water",
+            "stylers": [
+                {"visibility": "simplified"}
+            ]
+        }, {}
+        ]
+
+    }, getFilters = function () {
+        return ({
+            category: $('#category-selection').val()
+        });
+    }, updateData = function (rawData) {
         var build = [];
         $(rawData).each(function () {
             build.push({
@@ -35,8 +56,28 @@ $(function () {
             heatmap.setData(pointArray);
         }
         heatmap.setMap(map);
+    }, updateBounds = function(map) {
+        var b = map.getBounds();
+        return b;
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    var allowedBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(-47.76745501729981, 161.3701171875),
+        new google.maps.LatLng(-33.04097373430727, -175.91699618750005)
+    );
+    var lastValidCenter = map.getCenter();
+    google.maps.event.addListener(map, 'center_changed', function () {
+        var mapBounds = map.getBounds();
+        if (allowedBounds.contains(mapBounds.getSouthWest()) && allowedBounds.contains(mapBounds.getNorthEast())) {
+            // still within valid bounds, so save the last valid position
+            lastValidCenter = map.getCenter();
+            return;
+        }
+        // not valid anymore => return to last valid position
+        map.panTo(lastValidCenter);
+    });
+
 
     initFilters(updateData, map);
 });
