@@ -41,6 +41,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
         <script src="/static/js/heatmap.js"></script>
         <script src="/static/js/filters.js"></script>
+        <script src="/static/js/markers.js"></script>
         <link href="/static/css/bootstrap.css" rel="stylesheet" />
     </head>
 
@@ -60,6 +61,10 @@
                     <select class="form-control" id="regions">
                         <option>Custom</option>
                     </select>
+                    <br />
+                    <label for="enable-markers">Enable live updates:</label>
+                    <br />
+                    <input type="checkbox" id="enable-markers" checked/>
                 </div>
                 <input class="btn btn-primary pull-right" value="Submit" type="button" id="submit-button" />
                 <input class="btn btn-warning pull-right" value="Cancel" type="button" id="cancel-button" />
