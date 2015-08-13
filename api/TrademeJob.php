@@ -84,6 +84,14 @@ class TrademeJob implements Job {
         return((int) $categories[$offset]);
 
     }
+
+    /**
+     * @return int
+     */
+    private function getListedTime() {
+        $time = $this->dataset['StartDate'];
+        return((int)((float)preg_replace('/[^0-9]/', '', $time) / 1000.0));
+    }
     /**
      * @return array
      */
@@ -91,7 +99,8 @@ class TrademeJob implements Job {
         $build = array(
             'id' => $this->getId(),
             'locationId' => $this->getLocationId(),
-            'categoryId' => $this->getCategoryId()
+            'categoryId' => $this->getCategoryId(),
+            'listedTime' => (int)$this->getListedTime()
         );
         return($build);
     }
