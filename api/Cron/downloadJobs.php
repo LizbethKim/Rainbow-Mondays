@@ -15,8 +15,12 @@ $daoBatch = new DAO('batches');
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
     $dataset['batchId'] = (int)$batchId;
-    $daoJobs->insert($dataset);
-    echo("Listing id: $listingId, title: " . $job->getTitle() . "\n");
+    try {
+        $daoJobs->insert($dataset);
+        echo("Listing id: $listingId, title: " . $job->getTitle() . "\n");
+    } catch (Exception $e) {
+        echo "Duplicate!!\n";
+    }
 }
 
 $daoBatch->insert(array(
