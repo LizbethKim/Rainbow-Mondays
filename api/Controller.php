@@ -18,4 +18,11 @@ class Controller {
         }
         return($build);
     }
+
+    public function getFeedAction() {
+
+        $jobs = new Jobs();
+        return $jobs->getFeed(5*60);
+
+    }
 }

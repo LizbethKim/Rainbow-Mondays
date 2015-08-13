@@ -8,8 +8,9 @@ $api->updateJobCategories();
 $api->runQuery();
 
 $daoJobs = new DAO('jobs');
-$batchId = (int)$daoJobs->query("select max(id) as batchId from jobs")[0]['batchId'] + 1;
+$batchId = (int)$daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'] + 1;
 $daoBatch = new DAO('batches');
+
 
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
