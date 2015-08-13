@@ -258,7 +258,7 @@ class TrademeJobsApi implements JobHost {
         foreach($jobs as $job) {
             $dataset = array(
                 'categoryName' => $job['Name'],
-                'categoryId' => (int)$job['Code'],
+                'id' => (int)$job['Code'],
                 'parentCategoryId' => (int)$parentId
             );
             self::$daoJobsCategories->insert($dataset);

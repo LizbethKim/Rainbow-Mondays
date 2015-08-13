@@ -12,8 +12,6 @@ class TrademeJob implements Job {
     private static $daoCategories;
     /** @var array */
     private static $locationCache = array();
-    /** @var array */
-    private static $categoriesCache = array();
     /** @var  array */
     private $dataset;
 
@@ -72,7 +70,7 @@ class TrademeJob implements Job {
 
     /**
      * Retrieve the job category id from the category string.
-     * If it is not in the database, insert it and return the insert id
+     * If it is not in the database, return
      * @param int $parentLevel
      * @return int
      * @throws Exception
@@ -83,24 +81,15 @@ class TrademeJob implements Job {
         if($offset < 0) {
             throw new Exception("Could not find category");
         }
-        $category = (int) $categories[$offset];
-        if(isset(self::$categoriesCache[$category])) {
-            return(self::$categoriesCache[$category]);
-        } else {
-            $result = self::$daoCategories->query("SELECT id FROM categories WHERE categoryId = $category");
-            if(is_array($result) && count($result) > 0) {
-                self::$categoriesCache[$category] = $result[0]['id'];
-                return $result[0]['id'];
-            }
-            return($this->getCategoryId($parentLevel + 1));
-        }
+        return((int) $categories[$offset]);
+
     }
     /**
      * @return array
      */
     public function getDataset() {
         $build = array(
-            'jobId' => $this->getId(),
+            'id' => $this->getId(),
             'locationId' => $this->getLocationId(),
             'categoryId' => $this->getCategoryId()
         );

@@ -27,20 +27,6 @@
         <script src="/static/js/jquery-2.1.4.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
         <script src="/static/js/heatmap.js"></script>
-        <script>
-            $.ajax({
-                url: '/api/getCategories',
-                success : function (categories) {
-                    el = $('#category-selection');
-                    for(var i = 0; i < categories.length; i++) {
-                        var option = $('<option></option>');
-                        option.val(categories[i].id);
-                        option.html(categories[i].name);
-                        el.append(option);
-                    }
-                }
-            });
-        </script>
     </head>
 
     <body>
@@ -48,6 +34,9 @@
             <div class="panel">
                 <select id="category-selection">
                     <option value="0">No Filter</option>
+                </select>
+                <select id="subcategory-selection">
+
                 </select>
                 <input value="Submit" type="button" id="submit-button" />
             </div>
