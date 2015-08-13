@@ -1,5 +1,4 @@
 function initFilters(updateMap, map) {
-
     $.ajax({
         url: '/api/getRegions',
         success: function (regions){
@@ -15,13 +14,12 @@ function initFilters(updateMap, map) {
                 for(var i = 0; i<regions.length; i++){
                     if(regions[i].id == region){
                         map.panTo(new google.maps.LatLng(regions[i].lat, regions[i].long));
-                        map.setZoom(9)
+                        map.setZoom(7)
                         break;
                     }
                 }
             });
         }
-
     });
 
     $.ajax({
@@ -67,7 +65,7 @@ function initFilters(updateMap, map) {
         return ({
             category: subCat
         });
-    }
+    };
 
     var optionsBtn = $('<i class="options-btn glyphicon glyphicon-list"></i>');
     optionsBtn.click(function () {
