@@ -25,4 +25,19 @@ class Controller {
         return $jobs->getFeed(5*60);
 
     }
+
+    public function getRegionsAction(){
+        $daoRegions = new DAO('regions');
+        $result = $daoRegions->query("select * from districts");
+        $build = array();
+        foreach($result as $region) {
+            $build[] = array(
+                'id'=> (int)$region['id'],
+                'name'=> $region['name'],
+                'long'=> (float)$region['longitude'],
+                'lat'=> (float)$region['latitude']
+            );
+        }
+        return($build);
+    }
 }
