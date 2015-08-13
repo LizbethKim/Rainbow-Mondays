@@ -80,4 +80,5 @@ $(function () {
 
 
     initFilters(updateData, map);
+    initMapMarkers(map);
 });
