@@ -14,45 +14,65 @@
                 height: 100%;
                 position: absolute;
                 top: 0px;
-                left: 0px;
+                left: -405px;
                 background-color: white;
-                box-shadow: 2px 0 10px 2px black;
+                box-shadow: -5px 0 10px 2px black;
                 z-index: 100;
                 overflow-y: auto;
-                display: none;
             }
             .filters .panel {
                 padding: 20px;
             }
+            .options-btn {
+                font-size: 30px;
+                cursor: pointer;
+                padding: 10px;
+                margin: 10px;
+                color: #ffffff;
+                background-color: rgba(127, 127, 127, 0.2);
+                line-height: 25px;
+            }
+            #cancel-button, #submit-button {
+                margin: 10px;
+            }
         </style>
-        <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="/static/js/jquery-2.1.4.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-        <script src="js/heatmap.js"></script>
-        <script>
-            $.ajax({
-                url: '/api/getCategories',
-                success : function (categories) {
-                    el = $('#category-selection');
-                    for(var i = 0; i < categories.length; i++) {
-                        var option = $('<option></option>');
-                        option.val(categories[i].id);
-                        option.html(categories[i].name);
-                        el.append(option);
-                    }
-                }
-            });
-        </script>
+        <script src="/static/js/heatmap.js"></script>
+        <script src="/static/js/filters.js"></script>
+        <script src="/static/js/markers.js"></script>
+        <link href="/static/css/bootstrap.css" rel="stylesheet" />
     </head>
 
     <body>
         <div class="filters">
             <div class="panel">
-                <select id="category-selection">
-                    <option value="0">No Filter</option>
-                </select>
-                <input value="Submit" type="button" id="submit-button" />
+                <div class="form-group">
+                    <label for="category-selection">Category:</label>
+                    <select class="form-control" id="category-selection">
+                        <option value="0">No Filter</option>
+                    </select>
+                    <br />
+                    <label for="subcategory-selection">Subcategory:</label>
+                    <select class="form-control" id="subcategory-selection"></select>
+                    <br />
+                    <label for="regions">Region:</label>
+                    <select class="form-control" id="regions">
+                        <option>Custom</option>
+                    </select>
+                    <br />
+                    <label for="enable-markers">Enable live updates:</label>
+                    <br />
+                    <input type="checkbox" id="enable-markers" checked/>
+                </div>
+                <input class="btn btn-primary pull-right" value="Submit" type="button" id="submit-button" />
+                <input class="btn btn-warning pull-right" value="Cancel" type="button" id="cancel-button" />
+                <br style="clear: both;" />
             </div>
         </div>
-        <div id="map-canvas"></div>
+        <div id="map-canvas">
+
+        </div>
     </body>
 </html>

@@ -34,6 +34,13 @@ class Jobs {
         }
     }
 
+    function getFeed($period = 300){
+        $dao = self::$daoJobs;
+        $startTime = time() - (60*60*24);
+        $endTime = $startTime + $period;
+        return $dao->query("SELECT listedTime, longitude, latitude FROM jobs JOIN districts ON locationId = districts.id WHERE listedTime > $startTime AND listedTime < $endTime ");
+    }
+
     /**
      * @return array
      * @throws Exception
@@ -49,14 +56,13 @@ class Jobs {
     }
 
     /**
-     * @param $categoryId
+     * @param $categoryId - Trademe category id
      * @return array<int>
      */
     private function getSubCategories($categoryId) {
         $build = array();
         $dao = self::$daoCategories;
-        $tmCategoryId = (int)$dao->query("select categoryId from categories where id = {$categoryId}")[0]['categoryId'];
-        $result = $dao->query("SELECT id from categories where parentCategoryId = {$tmCategoryId}");
+        $result = $dao->query("SELECT id from categories where parentCategoryId = {$categoryId}");
         if(is_array($result) && count($result)) {
             foreach($result as $category) {
                 $build[] = (int)$category['id'];
@@ -70,43 +76,45 @@ class Jobs {
     }
 
     /**
-     * @return array
+     * @return string
      */
     private function getSelectCriteria() {
-        $conditions = array();
+        $categories = array();
         if(isset($this->filters['category']) && (int)$this->filters['category'] > 0) {
             $category = (int)$this->filters['category'];
-            $categories = $this->getSubCategories($category);
+            $categories = array_merge($categories, $this->getSubCategories($category));
             $categories[] = $category;
-            $conditions[] = 'categoryId in (' . implode(',', $categories) . ')';
         }
-
-        return($conditions);
+        if(count($categories)) {
+            return('categoryId in (' . implode(',', $categories) . ')');
+        } else {
+            return('');
+        }
     }
     /**
      * @throws Exception
      */
     function getJobs() {
         $daoJobs = self::$daoJobs;
-        $daoJobs->query("Select * from jobs");
         $locations = $this->getAllDistricts();
-        $conditions = implode(' and ', $this->getSelectCriteria());
+        $conditions = $this->getSelectCriteria();
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
-        $jobs = $daoJobs->query("select * from jobs where batchId = (select max(batchId) from jobs) {$conditions}");
-
+        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = (select max(batchId) from batches) {$conditions} group by locationId");
 
         $build = [];
+        $maxJobs = (int)$jobs[0]['count'];
         foreach($jobs as $job) {
-            srand($job['jobId']);
-            $r = (rand(-100000, 100000) / 100000) / 10;
-            $t = rand(0, M_PI * 200) / 100;
-
+            if($job['count'] > $maxJobs) {
+                $maxJobs = (int)$job['count'];
+            }
+        }
+        foreach($jobs as $job) {
             $build[] = array(
-                'longitude'=> $locations[$job['locationId']]['longitude'], // + (sin($t) * $r),
-                'latitude'=> $locations[$job['locationId']]['latitude'], // + (cos($t) * $r),
-                'count' => 1
+                'longitude'=> $locations[$job['locationId']]['longitude'],
+                'latitude'=> $locations[$job['locationId']]['latitude'],
+                'count' => log(($job['count'] / $maxJobs) * 100 + 1)
             );
         }
         return($build);
