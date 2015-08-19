@@ -63,8 +63,8 @@ $(function () {
             return b;
     };
 
-
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
 
 
 
