@@ -11,7 +11,7 @@ if($localities !== null) {
             $districId = $district->DistrictId;
             $dataset = array(
                 'name'=>$name,
-                'districtId'=> $districId,
+                'id'=> (int)$districId,
                 'longitude'=> $location['longitude'],
                 'latitude'=> $location['latitude']
             );
