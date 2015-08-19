@@ -59,27 +59,12 @@ $(function () {
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     console.log(map);
-    
-    //Zoom Code from here
  
-    var allowedBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-47.76745501729981,161.3701171875), 
-     new google.maps.LatLng(-33.04097373430727,-175.91699618750005)
-);
-
-     var lastValidCenter = map.getCenter();
-
-google.maps.event.addListener(map, 'center_changed', function() {
-  var mapBounds = map.getBounds();
-    if (allowedBounds.contains(mapBounds.getSouthWest()) && allowedBounds.contains(mapBounds.getNorthEast())) {
-        // still within valid bounds, so save the last valid position
-        lastValidCenter = map.getCenter();
-        return; 
-    }
-    console.log(mapBounds.getSouthWest());
-    // not valid anymore => return to last valid position
-    map.panTo(lastValidCenter);
-});
+    
+      //var lastValidCenter = map.getCenter();
+      //console.log(map.getCenter()); 
+      //	      var allowedBounds = map.getBounds();
+      //console.log(allowedBounds.getBounds().getNorthEast()); 
   
   
   
@@ -101,25 +86,24 @@ google.maps.event.addListener(map, 'center_changed', function() {
     
      
     
-  
       // Define the rectangle and set its editable property to true.
-  var rectangle = new google.maps.Rectangle({
-    bounds: allowedBounds,
-    editable: false,
-    draggable: false
-  });
+  //var rectangle = new google.maps.Rectangle({
+  //  bounds: allowedBounds,
+  //  editable: false,
+  //  draggable: false
+  // });
   
-  rectangle.setMap(map);
+  //rectangle.setMap(map);
 
   // Add an event listener on the rectangle.
-  rectangle.addListener('bounds_changed', showNewRect);
+  //google.maps.event.addListener(map, 'bounds_changed', showNewRect);
 
-  function updateBounds(map){
+ // function updateBounds(map){
     
-    var b = map.getBounds();
-    return b;  
+  ///  var b = map.getBounds();
+  //  return b;  
     
-  }
+  //}
   function showNewRect() {
     var ne = rectangle.getBounds().getNorthEast();
     var sw = rectangle.getBounds().getSouthWest();
@@ -138,10 +122,27 @@ google.maps.event.addListener(map, 'center_changed', function() {
   
   
   // Define an info window on the map.
-  infoWindow = new google.maps.InfoWindow();  
+  //infoWindow = new google.maps.InfoWindow();  
     
+   
+  
     
-    
+     
+
+      
+
+      //google.maps.event.addListener(map, 'center_changed', function() {
+      //var mapBounds = map.getBounds();
+      //if (allowedBounds.contains(mapBounds.getSouthWest()) && allowedBounds.contains(mapBounds.getNorthEast())) {
+        // still within valid bounds, so save the last valid position
+      //  lastValidCenter = map.getCenter();
+     //   return; 
+     // }
+      //onsole.log(mapBounds.getSouthWest());
+      // not valid anymore => return to last valid position
+     // map.panTo(lastValidCenter);
+});
+  
     
 });
 
