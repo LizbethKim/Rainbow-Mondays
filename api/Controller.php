@@ -22,17 +22,15 @@ class Controller {
     public function makeJobsAction(){
         $daoFakeJobs = new DAO('jobs');
         $fakeJobs = array ();
-        $maxId = $daoFakeJobs->query("SELECT MAX(id) as maxId from districts")[0]["maxId"];
-        $minId = $daoFakeJobs->query("SELECT MIN(id) as minId from districts")[0]["minId"];
+        $ids = $daoFakeJobs->query("SELECT id from districts");
         $batchId = $daoFakeJobs->query("SELECT MAX(batchId) as maxBatchId from jobs")[0]["maxBatchId"];
         $fakeJobId = $daoFakeJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
-        //increment batch id somehow ?
 
         for($a = 0; $a < 15;$a++) {
             $fakeJobs[] = array(
                 'id' => ++$fakeJobId,
                 'batchId' => $batchId,
-                'locationId' => rand($minId, $maxId),
+                'locationId' => (int)$ids[rand(1, count($ids))]['id'],
                 'categoryId' => -1,
                 'listedTime' => time() + rand(10, 30) - (24*60*60)
             );
