@@ -47,6 +47,7 @@ class Jobs {
                               WHERE listedTime > $startTime
                               AND listedTime < $endTime
                               AND batchId = $maxBatchId");
+
     }
 
     /**
