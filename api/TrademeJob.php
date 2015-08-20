@@ -98,6 +98,7 @@ class TrademeJob implements Job {
     public function getDataset() {
         $build = array(
             'id' => $this->getId(),
+            'jobTitle' => $this->getTitle(),
             'locationId' => $this->getLocationId(),
             'categoryId' => $this->getCategoryId(),
             'listedTime' => (int)$this->getListedTime()
