@@ -1,5 +1,6 @@
 server {
-        listen 80;
+    sendfile off;
+    listen 80;
 	root "/vagrant/";
 
 	location / {
