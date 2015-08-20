@@ -62,21 +62,6 @@ $(function () {
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-    var allowedBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(-47.76745501729981, 161.3701171875),
-        new google.maps.LatLng(-33.04097373430727, -175.91699618750005)
-    );
-    var lastValidCenter = map.getCenter();
-    google.maps.event.addListener(map, 'center_changed', function () {
-        var mapBounds = map.getBounds();
-        if (allowedBounds.contains(mapBounds.getSouthWest()) && allowedBounds.contains(mapBounds.getNorthEast())) {
-            // still within valid bounds, so save the last valid position
-            lastValidCenter = map.getCenter();
-            return;
-        }
-        // not valid anymore => return to last valid position
-        map.panTo(lastValidCenter);
-    });
 
 
     initFilters(updateData, map);

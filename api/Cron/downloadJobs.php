@@ -18,7 +18,7 @@ foreach($api as $listingId=>$job) {
         $daoJobs->insert($dataset);
         echo("Listing id: $listingId, title: " . $job->getTitle() . "\n");
     } catch (Exception $e) {
-        echo "Duplicate!!\n";
+        echo "Duplicate!! " . $e->getMessage() . "\n";
     }
 }
 
