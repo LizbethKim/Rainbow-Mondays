@@ -1,3 +1,10 @@
+CREATE USER 'rainbowmondays'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'rainbowmondays'@'localhost';
+FLUSH PRIVILEGES;
+
+
+create database rainbowmondays;
+use rainbowmondays;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL,
   `parentCategoryId` int(11) NOT NULL,
