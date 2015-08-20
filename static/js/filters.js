@@ -15,6 +15,7 @@ function initFilters(updateMap, map) {
                     if(regions[i].id == region){
                         map.panTo(new google.maps.LatLng(regions[i].lat, regions[i].long));
                         map.setZoom(11);
+
                         break;
                     }
                 }
