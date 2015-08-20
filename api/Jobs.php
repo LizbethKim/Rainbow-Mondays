@@ -38,7 +38,8 @@ class Jobs {
         $dao = self::$daoJobs;
         $startTime = time() - (60*60*24);
         $endTime = $startTime + $period;
-        return $dao->query("SELECT listedTime, longitude, latitude FROM jobs JOIN districts ON locationId = districts.id WHERE listedTime > $startTime AND listedTime < $endTime ");
+        $result = $dao->query("SELECT listedTime, longitude, latitude FROM jobs JOIN districts ON locationId = districts.id WHERE listedTime > $startTime AND listedTime < $endTime ");
+        return $result;
     }
 
     /**

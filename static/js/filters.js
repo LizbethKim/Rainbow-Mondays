@@ -14,7 +14,7 @@ function initFilters(updateMap, map) {
                 for(var i = 0; i<regions.length; i++){
                     if(regions[i].id == region){
                         map.panTo(new google.maps.LatLng(regions[i].lat, regions[i].long));
-                        map.setZoom(7)
+                        map.setZoom(9);
                         break;
                     }
                 }
