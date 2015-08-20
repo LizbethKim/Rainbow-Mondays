@@ -1,3 +1,10 @@
+
+
+create DATABASE if not exists rainbowmondays;
+use rainbowmondays;
+
+
+
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL,
   `parentCategoryId` int(11) NOT NULL,
@@ -16,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `districts` (
 CREATE TABLE IF NOT EXISTS `jobs` (
   `id` int(11) NOT NULL,
   `batchId` int(11) NOT NULL,
+  `jobTitle` varchar(255) DEFAULT NUll,
   `locationId` int(11) NOT NULL,
   `categoryId` int(11) NOT NULL,
   `listedTime` int(11) NOT NULL,
@@ -26,3 +34,9 @@ CREATE TABLE IF NOT EXISTS `batches` (
     id INT PRIMARY KEY NOT NULL,
     date INT NOT NULL
 );
+
+
+
+CREATE USER 'rainbowmondays'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'rainbowmondays'@'localhost';
+FLUSH PRIVILEGES;
