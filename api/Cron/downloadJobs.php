@@ -1,5 +1,5 @@
 <?php
-include('../config.php');
+include(dirname(__FILE__) . '/../config.php');
 
 $api = new TrademeJobsApi();
 $api->setConsumerKey('6CEAB3585FFA4AEDB00EF2CFCEFABEF3');
@@ -10,7 +10,6 @@ $api->runQuery();
 $daoJobs = new DAO('jobs');
 $batchId = (int)$daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'] + 1;
 $daoBatch = new DAO('batches');
-
 
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
