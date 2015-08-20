@@ -120,6 +120,9 @@ class Jobs {
             }
         }
         foreach($jobs as $job) {
+            if(!isset($locations[$job['locationId']])) {
+                continue;
+            }
             $build[] = array(
                 'longitude'=> $locations[$job['locationId']]['longitude'],
                 'latitude'=> $locations[$job['locationId']]['latitude'],

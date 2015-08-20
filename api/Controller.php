@@ -30,7 +30,7 @@ class Controller {
             $fakeJobs[] = array(
                 'id' => ++$fakeJobId,
                 'batchId' => $batchId,
-                'locationId' => (int)$ids[rand(1, count($ids))]['id'],
+                'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
                 'categoryId' => -1,
                 'listedTime' => time() + rand(10, 30) - (24*60*60)
             );
