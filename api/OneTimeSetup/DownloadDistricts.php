@@ -1,5 +1,5 @@
 <?php
-include('../config.php');
+include(dirname(__FILE__) . '/../config.php');
 
 $dao = new DAO('districts');
 $localities = json_decode(file_get_contents('https://api.trademe.co.nz/v1/Localities.json?with_counts=false'));
