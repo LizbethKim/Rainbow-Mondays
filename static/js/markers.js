@@ -7,17 +7,6 @@ function initMapMarkers(map) {
         for (var i = 0; i < data.length; i++) {
             var timeSeconds = parseInt(data[i]["listedTime"]);
             if (parseInt(((new Date()).getTime() / 1000) - (60 * 60 * 24)) == timeSeconds) {
-
-                var jobDetails = '<h1>'  + data[i]["title"] +  '</h1>' +
-                    '<p>' + new Date(parseInt(data[i]["listedTime"]) * 1000) + '</p>' +
-                    '<br>' +
-                '<a target="_blank" href="' + "http://www.trademe.co.nz/Browse/Listing.aspx?id=" + data[i]["id"] + '">' + 'Show Job' + '</a>';
-
-                var infowindow = new google.maps.InfoWindow({
-                    content: jobDetails
-                });
-
-
                 var marker = new google.maps.Marker({
                     position: {
                         lng: parseFloat(data[i]["longitude"]),
@@ -26,17 +15,16 @@ function initMapMarkers(map) {
                     animation: google.maps.Animation.BOUNCE,
                     map: map
                 });
-
+                var infowindow = new google.maps.InfoWindow({
+                    content: '<h1>'  + data[i]["title"] +  '</h1><p>' + new Date(parseInt(data[i]["listedTime"]) * 1000) + '</p><br><a target="_blank" href="' + "http://www.trademe.co.nz/Browse/Listing.aspx?id=" + data[i]["id"] + '">' + 'Show Job' + '</a>'
+                });
                 marker.addListener('click', function () {
                     infowindow.open(map, marker);
                 });
-
-                infowindow.addListener('closeclick',function
-                    () {
+                infowindow.addListener('closeclick',function () {
                     marker.setMap(null);
-            });
-
-            //Remove marker after a set duration
+                });
+                //Remove marker after a set duration
                 setTimeout(function (marker, map) {
                     marker.setMap(null);
                 }.bind(this, marker, map), 30000);
