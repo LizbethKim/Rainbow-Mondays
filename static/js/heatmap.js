@@ -1,4 +1,7 @@
 $(function () {
+
+
+
     var map,
     zoom = 6,
     heatmap,
@@ -32,6 +35,9 @@ $(function () {
             }]
         }]*/
     }, updateData = function (rawData) {
+
+
+
         var build = [];
         $(rawData).each(function () {
             build.push({
@@ -56,6 +62,8 @@ $(function () {
             var b = map.getBounds();
             return b;
     };
+
+
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
 
