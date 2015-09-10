@@ -1,6 +1,4 @@
 function initFilters(updateMap, map) {
-
-
     $("#timeslider").slider({
         value:((new Date()).getTime() / 1000),
         min: ((new Date()).getTime() / 1000) - (6*4*7*24*60*60),
@@ -10,34 +8,6 @@ function initFilters(updateMap, map) {
             $( "#timeslider-input" ).val(ui.value);
         }
     });
-
-
-    $.ajax({
-
-
-        url: '/api/getRegions',
-        success: function (regions){
-            var el = $('#regions');
-            for(var i= 0; i<regions.length; i++){
-                var option = $('<option></option>');
-                option.val(regions[i].id);
-                option.html(regions[i].name);
-                el.append(option);
-            }
-            el.click(function(){
-                var region = $(this).val();
-                for(var i = 0; i<regions.length; i++){
-                    if(regions[i].id == region){
-                        map.panTo(new google.maps.LatLng(regions[i].lat, regions[i].long));
-                        map.setZoom(11);
-
-                        break;
-                    }
-                }
-            });
-        }
-    });
-
     $.ajax({
         url: '/api/getCategories',
         success : function (categories) {
@@ -104,10 +74,9 @@ function initFilters(updateMap, map) {
     });
 
     $('#submit-button').click(function () {
-
         var body = $('body')[0];
         var spinner = new Spinner().spin(body);
-      var overlay = $('<div id="overlay"></div>')
+        var overlay = $('<div id="overlay"></div>')
         overlay.appendTo(body);
 
         $.ajax({
