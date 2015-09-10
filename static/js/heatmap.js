@@ -31,10 +31,6 @@ $(function () {
                 "visibility": "simplified"
             }]
         }]*/
-    }, getFilters = function () {
-        return ({
-            category: $('#category-selection').val()
-        });
     }, updateData = function (rawData) {
         var build = [];
         $(rawData).each(function () {
@@ -57,8 +53,8 @@ $(function () {
         }
         heatmap.setMap(map);
     }, updateBounds = function(map) {
-        var b = map.getBounds();
-        return b;
+            var b = map.getBounds();
+            return b;
     };
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 

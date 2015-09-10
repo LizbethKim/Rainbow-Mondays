@@ -110,7 +110,16 @@ class Jobs {
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
-        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = (select max(batchId) from batches) {$conditions} group by locationId");
+
+        if (isset($this->filters["time"])){
+            $time = (int)$this->filters["time"];
+            $query = "SELECT min(abs(date - $time)) as timeDelta, id as batchId from batches";
+        } else {
+            $query = "select max(id) as batchId from batches;";
+        }
+        $batchId = (int)$daoJobs->query($query)[0]['batchId'];
+
+        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = $batchId {$conditions} group by locationId");
 
         $build = [];
         $maxJobs = (int)$jobs[0]['count'];

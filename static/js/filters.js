@@ -1,4 +1,17 @@
 function initFilters(updateMap, map) {
+
+
+    $("#timeslider").slider({
+        value:((new Date()).getTime() / 1000),
+        min: ((new Date()).getTime() / 1000) - (6*4*7*24*60*60),
+        max: ((new Date()).getTime() / 1000) + (6*4*7*24*60*60),
+        step: (1*4*7*24*60*60),
+        slide: function( event, ui ) {
+            $( "#timeslider-input" ).val(ui.value);
+        }
+    });
+
+
     $.ajax({
         url: '/api/getRegions',
         success: function (regions){
@@ -64,7 +77,8 @@ function initFilters(updateMap, map) {
             subCat = cat;
         }
         return ({
-            category: subCat
+            category: subCat,
+            time: $('#timeslider-input').val()
         });
     };
 
