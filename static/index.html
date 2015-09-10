@@ -36,21 +36,24 @@
             #cancel-button, #submit-button {
                 margin: 10px;
             }
-            #overlay {
+            #overlay{
                 position: fixed;
+                top: 0;
+                left: 0;
                 width: 100%;
                 height: 100%;
-                left: 0px;
-                top: 0px;
+                background-color: #000;
+                filter:alpha(opacity=50);
+                -moz-opacity:0.5;
+                -khtml-opacity: 0.5;
                 opacity: 0.5;
-                z-index: 100;
-                background-color: #000000;
-
-                transition: opacity 2s;
+                z-index: 10000;
             }
+
+
+
         </style>
         <script src="/static/js/jquery-2.1.4.min.js"></script>
-        <script src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
         <script src="/static/js/heatmap.js"></script>

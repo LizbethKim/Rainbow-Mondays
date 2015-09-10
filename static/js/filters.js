@@ -13,6 +13,8 @@ function initFilters(updateMap, map) {
 
 
     $.ajax({
+
+
         url: '/api/getRegions',
         success: function (regions){
             var el = $('#regions');
@@ -119,11 +121,7 @@ function initFilters(updateMap, map) {
 
             }
         });
-    });
-    $.ajax({
-        url: '/api/list',
-        success: updateMap
-    });
+    }).click();
 
 
 }
