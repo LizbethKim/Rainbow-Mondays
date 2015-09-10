@@ -88,15 +88,28 @@ function initFilters(updateMap, map) {
     });
 
     $('#submit-button').click(function () {
+
+        var body = $('body')[0];
+        var spinner = new Spinner().spin(body);
+      var overlay = $('<div id="overlay"></div>')
+        overlay.appendTo(body);
+
         $.ajax({
             url: '/api/list',
             data: getFilters(),
             method: 'post',
-            success: updateMap
+            success: function () {
+                updateMap.apply(this, arguments);
+                spinner.stop();
+               $("#overlay").remove();
+
+            }
         });
     });
     $.ajax({
         url: '/api/list',
         success: updateMap
     });
+
+
 }

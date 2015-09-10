@@ -36,6 +36,22 @@
             #cancel-button, #submit-button {
                 margin: 10px;
             }
+            #overlay{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                filter:alpha(opacity=50);
+                -moz-opacity:0.5;
+                -khtml-opacity: 0.5;
+                opacity: 0.5;
+                z-index: 10000;
+            }
+
+
+
         </style>
         <script src="/static/js/jquery-2.1.4.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
@@ -43,6 +59,7 @@
         <script src="/static/js/heatmap.js"></script>
         <script src="/static/js/filters.js"></script>
         <script src="/static/js/markers.js"></script>
+        <script src="/static/js/Spin.js"></script>
         <link href="/static/css/bootstrap.css" rel="stylesheet" />
     </head>
 
