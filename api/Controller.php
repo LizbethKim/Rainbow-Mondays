@@ -63,4 +63,22 @@ class Controller {
         }
         return($build);
     }
+
+    public function getInfoAction(){
+      $daoRegions = new DAO('regions');
+      $result = $daoRegions->query("select * from districts");
+      $lat = $_POST['lat'];
+      $lng = $_POST['lng'];
+      $currBest = "None";
+      $currBestDist = 300;
+      foreach($result as $region) {
+        $dist = max((float)$region['longitude'], $lng) - min((float)$region['longitude'], $lng);
+        $dist = $dist + max((float)$region['latitude'], $lat) - min((float)$region['latitude'], $lat);
+        if ($dist < $currBestDist){
+          $currBestDist = $dist;
+          $currBest = $region['name'];
+        }
+      }
+      return($currBest);
+    }
 }
