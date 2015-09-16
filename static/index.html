@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Heat map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
             html, body, #map-canvas {
                 height: 100%;
@@ -35,14 +36,34 @@
             #cancel-button, #submit-button {
                 margin: 10px;
             }
+            #overlay{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                filter:alpha(opacity=50);
+                -moz-opacity:0.5;
+                -khtml-opacity: 0.5;
+                opacity: 0.5;
+                z-index: 10000;
+            }
+
+
+
         </style>
         <script src="/static/js/jquery-2.1.4.min.js"></script>
+        <script src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="/static/js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
         <script src="/static/js/heatmap.js"></script>
         <script src="/static/js/filters.js"></script>
         <script src="/static/js/markers.js"></script>
+        <script src="/static/js/spin.js"></script>
+
         <link href="/static/css/bootstrap.css" rel="stylesheet" />
+        <link href="/static/css/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
     </head>
 
     <body>
@@ -57,14 +78,14 @@
                     <label for="subcategory-selection">Subcategory:</label>
                     <select class="form-control" id="subcategory-selection"></select>
                     <br />
-                    <label for="regions">Region:</label>
-                    <select class="form-control" id="regions">
-                        <option>Custom</option>
-                    </select>
-                    <br />
                     <label for="enable-markers">Enable live updates:</label>
                     <br />
                     <input type="checkbox" id="enable-markers" checked/>
+                    <br />
+                    <label for="timeslider">Time:</label>
+                    <div id="timeslider"></div>
+                    <input type="hidden" id="timeslider-input" />
+
                 </div>
                 <input class="btn btn-primary pull-right" value="Submit" type="button" id="submit-button" />
                 <input class="btn btn-warning pull-right" value="Cancel" type="button" id="cancel-button" />

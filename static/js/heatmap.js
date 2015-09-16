@@ -1,4 +1,7 @@
 $(function () {
+
+
+
     var map,
     zoom = 6,
     heatmap,
@@ -31,11 +34,10 @@ $(function () {
                 "visibility": "simplified"
             }]
         }]*/
-    }, getFilters = function () {
-        return ({
-            category: $('#category-selection').val()
-        });
     }, updateData = function (rawData) {
+
+
+
         var build = [];
         $(rawData).each(function () {
             build.push({
@@ -57,9 +59,11 @@ $(function () {
         }
         heatmap.setMap(map);
     }, updateBounds = function(map) {
-        var b = map.getBounds();
-        return b;
+            var b = map.getBounds();
+            return b;
     };
+
+
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     console.log(map);
  
@@ -77,77 +81,6 @@ $(function () {
         success: updateData
     });
 
-
-    $('#submit-button').click(function () {
-        $.ajax({
-            url: '/api/list',
-            data: getFilters(),
-            method: 'post',
-            success: updateData
-        });
-    });
-    
-     
-    
-      // Define the rectangle and set its editable property to true.
-  //var rectangle = new google.maps.Rectangle({
-  //  bounds: allowedBounds,
-  //  editable: false,
-  //  draggable: false
-  // });
-  
-  //rectangle.setMap(map);
-
-  // Add an event listener on the rectangle.
-  //google.maps.event.addListener(map, 'bounds_changed', showNewRect);
-
- // function updateBounds(map){
-    
-  ///  var b = map.getBounds();
-  //  return b;  
-    
-  //}
-  function showNewRect() {
-    var ne = rectangle.getBounds().getNorthEast();
-    var sw = rectangle.getBounds().getSouthWest();
-
-    var contentString = '<b>Rectangle moved.</b><br>' +
-	'New north-east corner: ' + ne.lat() + ', ' + ne.lng() + '<br>' +
-	'New south-west corner: ' + sw.lat() + ', ' + sw.lng();
-
-    // Set the info window's content and position.
-    infoWindow.setContent(contentString);
-    infoWindow.setPosition(ne);
-
-    infoWindow.open(map);
-  }
-
-  
-  
-  // Define an info window on the map.
-  //infoWindow = new google.maps.InfoWindow();  
-    
-   
-  
-    
-     
-
-      
-
-      //google.maps.event.addListener(map, 'center_changed', function() {
-      //var mapBounds = map.getBounds();
-      //if (allowedBounds.contains(mapBounds.getSouthWest()) && allowedBounds.contains(mapBounds.getNorthEast())) {
-        // still within valid bounds, so save the last valid position
-      //  lastValidCenter = map.getCenter();
-     //   return; 
-     // }
-      //onsole.log(mapBounds.getSouthWest());
-      // not valid anymore => return to last valid position
-     // map.panTo(lastValidCenter);
-});
-  
-    
-});
 
 
     initFilters(updateData, map);

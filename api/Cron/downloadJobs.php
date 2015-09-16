@@ -1,5 +1,5 @@
 <?php
-include('../config.php');
+include(dirname(__FILE__) . '/../config.php');
 
 $api = new TrademeJobsApi();
 $api->setConsumerKey('xxxxxxxxxxxxxxxxxxxxxxxxxx');
@@ -11,7 +11,6 @@ $daoJobs = new DAO('jobs');
 $batchId = (int)$daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'] + 1;
 $daoBatch = new DAO('batches');
 
-
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
     $dataset['batchId'] = (int)$batchId;
@@ -19,7 +18,7 @@ foreach($api as $listingId=>$job) {
         $daoJobs->insert($dataset);
         echo("Listing id: $listingId, title: " . $job->getTitle() . "\n");
     } catch (Exception $e) {
-        echo "Duplicate!!\n";
+        echo "Duplicate!! " . $e->getMessage() . "\n";
     }
 }
 

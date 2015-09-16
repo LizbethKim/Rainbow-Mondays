@@ -19,8 +19,31 @@ class Controller {
         return($build);
     }
 
-    public function getFeedAction() {
+    public function makeJobsAction(){
+        $daoFakeJobs = new DAO('jobs');
+        $fakeJobs = array ();
+        $ids = $daoFakeJobs->query("SELECT id from districts");
+        $batchId = $daoFakeJobs->query("SELECT MAX(batchId) as maxBatchId from jobs")[0]["maxBatchId"];
+        $fakeJobId = $daoFakeJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
 
+        for($a = 0; $a < 15;$a++) {
+            $fakeJobs[] = array(
+                'id' => ++$fakeJobId,
+                'batchId' => $batchId,
+                'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
+                'categoryId' => -1,
+                'listedTime' => time() + rand(10, 30) - (24*60*60)
+            );
+        }
+        foreach($fakeJobs as $fakeJob) {
+            $daoFakeJobs->insert($fakeJob);
+        }
+        return(array(
+            'error' => false
+        ));
+    }
+
+    public function getFeedAction() {
         $jobs = new Jobs();
         return $jobs->getFeed(5*60);
 

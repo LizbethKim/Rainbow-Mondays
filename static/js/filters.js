@@ -1,27 +1,13 @@
 function initFilters(updateMap, map) {
-    $.ajax({
-        url: '/api/getRegions',
-        success: function (regions){
-            var el = $('#regions');
-            for(var i= 0; i<regions.length; i++){
-                var option = $('<option></option>');
-                option.val(regions[i].id);
-                option.html(regions[i].name);
-                el.append(option);
-            }
-            el.click(function(){
-                var region = $(this).val();
-                for(var i = 0; i<regions.length; i++){
-                    if(regions[i].id == region){
-                        map.panTo(new google.maps.LatLng(regions[i].lat, regions[i].long));
-                        map.setZoom(7)
-                        break;
-                    }
-                }
-            });
+    $("#timeslider").slider({
+        value:((new Date()).getTime() / 1000),
+        min: ((new Date()).getTime() / 1000) - (6*4*7*24*60*60),
+        max: ((new Date()).getTime() / 1000) + (6*4*7*24*60*60),
+        step: (1*4*7*24*60*60),
+        slide: function( event, ui ) {
+            $( "#timeslider-input" ).val(ui.value);
         }
     });
-
     $.ajax({
         url: '/api/getCategories',
         success : function (categories) {
@@ -63,7 +49,8 @@ function initFilters(updateMap, map) {
             subCat = cat;
         }
         return ({
-            category: subCat
+            category: subCat,
+            time: $('#timeslider-input').val()
         });
     };
 
@@ -87,15 +74,23 @@ function initFilters(updateMap, map) {
     });
 
     $('#submit-button').click(function () {
+        var body = $('body')[0];
+        var spinner = new Spinner().spin(body);
+        var overlay = $('<div id="overlay"></div>')
+        overlay.appendTo(body);
+
         $.ajax({
             url: '/api/list',
             data: getFilters(),
             method: 'post',
-            success: updateMap
+            success: function () {
+                updateMap.apply(this, arguments);
+                spinner.stop();
+               $("#overlay").remove();
+
+            }
         });
-    });
-    $.ajax({
-        url: '/api/list',
-        success: updateMap
-    });
+    }).click();
+
+
 }
