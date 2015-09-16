@@ -34,9 +34,10 @@ class TrademeJobsApi implements JobHost {
      * @return TrademeJob|null
      */
     public function current() {
-        if(isset($this->resultSet['List']) && is_array($this->resultSet['List']) && isset($this->resultSet['List'][$this->positionWithinPage])) {
-            return(new TrademeJob($this->resultSet['List'][$this->positionWithinPage]));
+        if(isset($this->resultSet['List']) && is_array($this->resultSet['List']) && isset($this->resultSet['List'][(int)$this->positionWithinPage])) {
+            return(new TrademeJob($this->resultSet['List'][(int)$this->positionWithinPage]));
         }
+
         return(null);
     }
 

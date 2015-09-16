@@ -36,9 +36,18 @@ class Jobs {
 
     function getFeed($period = 300){
         $dao = self::$daoJobs;
+        $maxBatchId = $dao->query("SELECT MAX(id) AS batchId FROM batches")[0]["batchId"];
         $startTime = time() - (60*60*24);
         $endTime = $startTime + $period;
-        return $dao->query("SELECT listedTime, longitude, latitude FROM jobs JOIN districts ON locationId = districts.id WHERE listedTime > $startTime AND listedTime < $endTime ");
+        return $dao->query("SELECT
+                                listedTime, longitude, latitude, jobs.id, jobTitle AS title
+                              FROM jobs
+                              JOIN districts
+                                ON locationId = districts.id
+                              WHERE listedTime > $startTime
+                              AND listedTime < $endTime
+                              AND batchId = $maxBatchId");
+
     }
 
     /**
@@ -101,7 +110,16 @@ class Jobs {
         if(strlen($conditions) > 0) {
             $conditions = 'and ' . $conditions;
         }
-        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = (select max(batchId) from batches) {$conditions} group by locationId");
+
+        if (isset($this->filters["time"])){
+            $time = (int)$this->filters["time"];
+            $query = "SELECT min(abs(date - $time)) as timeDelta, id as batchId from batches";
+        } else {
+            $query = "select max(id) as batchId from batches;";
+        }
+        $batchId = (int)$daoJobs->query($query)[0]['batchId'];
+
+        $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = $batchId {$conditions} group by locationId");
 
         $build = [];
         $maxJobs = (int)$jobs[0]['count'];
@@ -111,6 +129,9 @@ class Jobs {
             }
         }
         foreach($jobs as $job) {
+            if(!isset($locations[$job['locationId']])) {
+                continue;
+            }
             $build[] = array(
                 'longitude'=> $locations[$job['locationId']]['longitude'],
                 'latitude'=> $locations[$job['locationId']]['latitude'],

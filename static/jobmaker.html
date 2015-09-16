@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Heat map</title>
+        <style>
+        </style>
+        <script src="/static/js/jquery-2.1.4.min.js"></script>
+
+    </head>
+
+    <body>
+        <div>
+            <button id="bt1">Make Jobs</button>
+        </div>
+    </body>
+
+    <script>
+        $("#bt1").click(function() {
+            $.ajax({
+                url: "/api/makeJobs",
+                success: function(response){
+                    if(response.error){
+                        alert("failed to insert 'fake jobs'");
+                    }
+                    else{
+                        alert("Fake jobs have successfully been inserted!");
+                    }
+                }
+            });
+        });
+    </script>
+
+</html>
