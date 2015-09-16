@@ -35,6 +35,13 @@ CREATE TABLE IF NOT EXISTS `batches` (
     date INT NOT NULL
 );
 
+CREATE TABLE regions
+(
+  id INT PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  `long` INT NOT NULL,
+  lat INT NOT NULL
+);
 
 
 CREATE USER 'rainbowmondays'@'localhost' IDENTIFIED BY 'password';
