@@ -64,6 +64,21 @@ $(function () {
     };
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    console.log(map);
+ 
+    
+      //var lastValidCenter = map.getCenter();
+      //console.log(map.getCenter()); 
+      //	      var allowedBounds = map.getBounds();
+      //console.log(allowedBounds.getBounds().getNorthEast()); 
+  
+  
+  
+  
+  $.ajax({
+        url: '/api/list',
+        success: updateData
+    });
 
 
 
