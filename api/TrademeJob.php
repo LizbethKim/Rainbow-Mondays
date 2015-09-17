@@ -86,6 +86,15 @@ class TrademeJob implements Job {
     }
 
     /**
+    * @return string
+    */
+    private function getType(){
+      if ($this->dataset['JobType'] == 'FT') return 0;
+      if ($this->dataset['JobType'] == 'PT') return 1;
+      return 2;
+    }
+
+    /**
      * @return int
      */
     private function getListedTime() {
@@ -101,7 +110,8 @@ class TrademeJob implements Job {
             'jobTitle' => $this->getTitle(),
             'locationId' => $this->getLocationId(),
             'categoryId' => $this->getCategoryId(),
-            'listedTime' => (int)$this->getListedTime()
+            'listedTime' => (int)$this->getListedTime(),
+            'type' => $this->getType()
         );
         return($build);
     }
