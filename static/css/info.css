@@ -1,0 +1,11 @@
+.info{
+  position: fixed;
+  top: 0%;
+  left: 80%;
+  border: 1px solid;
+  background-color:rgba(0,0,0,0.2);
+  color: black;
+  border-radius: 10px;
+  width: 20%;
+  height: 20%;
+}
