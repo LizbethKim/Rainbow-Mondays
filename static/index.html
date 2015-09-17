@@ -53,17 +53,17 @@
 
 
         </style>
-        <script src="/static/js/jquery-2.1.4.min.js"></script>
-        <script src="/static/js/jquery-ui-1.10.4.custom.min.js"></script>
-        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="js/jquery-2.1.4.min.js"></script>
+        <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
-        <script src="/static/js/heatmap.js"></script>
-        <script src="/static/js/filters.js"></script>
-        <script src="/static/js/markers.js"></script>
-        <script src="/static/js/spin.js"></script>
+        <script src="js/heatmap.js"></script>
+        <script src="js/filters.js"></script>
+        <script src="js/markers.js"></script>
+        <!--<script src="js/spin.js"></script>!-->
 
-        <link href="/static/css/bootstrap.css" rel="stylesheet" />
-        <link href="/static/css/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
+        <link href="css/bootstrap.css" rel="stylesheet" />
+        <link href="css/jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" />
     </head>
 
     <body>
@@ -77,15 +77,24 @@
                     <br />
                     <label for="subcategory-selection">Subcategory:</label>
                     <select class="form-control" id="subcategory-selection"></select>
-                    <br />
                     <label for="enable-markers">Enable live updates:</label>
                     <br />
                     <input type="checkbox" id="enable-markers" checked/>
                     <br />
-                    <label for="timeslider">Time:</label>
+                    <br />
+                    <label for="amount">Time:</label>
+		    <input type="text" id="amount" readonly style="border:0; color:#000000; font-weight:bold;">
                     <div id="timeslider"></div>
                     <input type="hidden" id="timeslider-input" />
-
+                    <label for="slider-month">Month:</label>
+                    <input type="checkbox" id="slider-month" class="example" checked/>
+                    <label for="slider-year">Year:</label>
+		    <input type="checkbox" id="slider-year" class="example" />
+                    <br />
+		    <br/>
+		    <br/>
+		    <label for="sticky-sidebar">Sticky sidebar:</label>
+		    <input type="checkbox" id="sticky-sidebar"/>
                 </div>
                 <input class="btn btn-primary pull-right" value="Submit" type="button" id="submit-button" />
                 <input class="btn btn-warning pull-right" value="Cancel" type="button" id="cancel-button" />
