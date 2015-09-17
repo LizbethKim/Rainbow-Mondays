@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `locationId` int(11) NOT NULL,
   `categoryId` int(11) NOT NULL,
   `listedTime` int(11) NOT NULL,
-  `type` int(1) NOT NULL,
+  `type` varchar(2) NOT NULL,
   PRIMARY KEY (`id`, `batchId`)
 );
 
