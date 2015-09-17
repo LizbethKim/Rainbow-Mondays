@@ -1,13 +1,32 @@
 function initFilters(updateMap, map) {
+    
+    $('input.example').on('change', function() {
+    $('input.example').not(this).prop('checked', false); 
+	    if ($('#slider-month')[0].checked) {
+		$("#timeslider").slider("option", "step", (4*7*24*60*60)); 
+	    }else if ($('#slider-year')[0].checked) {
+		$("#timeslider").slider("option", "step", (365*24*60*60)); 
+	    }
+    
+    });
+    
+  
     $("#timeslider").slider({
         value:((new Date()).getTime() / 1000),
-        min: ((new Date()).getTime() / 1000) - (6*4*7*24*60*60),
-        max: ((new Date()).getTime() / 1000) + (6*4*7*24*60*60),
-        step: (1*4*7*24*60*60),
+        min: ((new Date()).getTime() / 1000) - (6*12*4*7*24*60*60),
+        max: ((new Date()).getTime() / 1000),
+        step: (4*7*24*60*60),
         slide: function( event, ui ) {
-            $( "#timeslider-input" ).val(ui.value);
+	  // console.log("Step: " + ($("#timeslider").slider("option", "step").val()));
+	   var month = new Date(ui.value*1000).getMonth().toLocaleString();
+	   var year = new Date(ui.value*1000).getFullYear().toLocaleString()
+	   
+	    
+            $("#amount").val(month+ " / " + year);
+	     
         }
     });
+    $( "#amount" ).val(    );
     $.ajax({
         url: '/api/getCategories',
         success : function (categories) {
@@ -55,7 +74,7 @@ function initFilters(updateMap, map) {
     };
 
     var optionsBtn = $('<i class="options-btn glyphicon glyphicon-list"></i>');
-    optionsBtn.click(function () {
+    optionsBtn.click(function () {    
         $('.filters').animate({
             left: '0px'
         });
@@ -64,14 +83,29 @@ function initFilters(updateMap, map) {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(optionsBtn[0]);
 
     $('#cancel-button').click(function () {
-        $('.filters').animate({
+       
+      if ($('#sticky-sidebar')[0].checked) {
+        console.log("Test here")    
+	return;
+      }
+      
+      $('.filters').animate({
             left: '-405px'
         });
     });
 
     $('#map-canvas').mousedown(function () {
-        $('#cancel-button').click();
+      
+      
+      if ($('#sticky-sidebar')[0].checked) {
+            return;
+      }
+      
+      $('#cancel-button').click();
     });
+    
+    
+    
 
     $('#submit-button').click(function () {
         var body = $('body')[0];
