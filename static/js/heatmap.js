@@ -151,6 +151,28 @@ $(function () {
       });
     });
 
+    var currentRegion;
+
+    var getCenter = function() {
+      return {
+        lat: map.getCenter().lat(),
+        lng: map.getCenter().lng()
+      }
+    }
+
+    map.addListener('dragend', function(){
+      var centre = map.getCenter();
+      console.log(centre);
+      $.ajax({
+          url: '/api/getInfo',
+          data: getCenter(),
+          method: "post",
+          success: function(resp){
+            console.log(resp);
+          }
+      });
+    });
+
 
 
     initFilters(updateData, map);
