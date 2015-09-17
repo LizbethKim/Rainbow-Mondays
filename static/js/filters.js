@@ -17,16 +17,11 @@ function initFilters(updateMap, map) {
         max: ((new Date()).getTime() / 1000),
         step: (4*7*24*60*60),
         slide: function( event, ui ) {
-	  // console.log("Step: " + ($("#timeslider").slider("option", "step").val()));
-	   var month = new Date(ui.value*1000).getMonth().toLocaleString();
-	   var year = new Date(ui.value*1000).getFullYear().toLocaleString()
-	   
-	    
+            var month = new Date(ui.value*1000).getMonth().toLocaleString();
+            var year = new Date(ui.value*1000).getFullYear().toLocaleString();
             $("#amount").val(month+ " / " + year);
-	     
         }
     });
-    $( "#amount" ).val(    );
     $.ajax({
         url: '/api/getCategories',
         success : function (categories) {
