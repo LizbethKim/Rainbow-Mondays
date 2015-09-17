@@ -65,16 +65,16 @@ $(function () {
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
     console.log(map);
- 
-    
+
+
       //var lastValidCenter = map.getCenter();
-      //console.log(map.getCenter()); 
+      //console.log(map.getCenter());
       //	      var allowedBounds = map.getBounds();
-      //console.log(allowedBounds.getBounds().getNorthEast()); 
-  
-  
-  
-  
+      //console.log(allowedBounds.getBounds().getNorthEast());
+
+
+
+
   $.ajax({
         url: '/api/list',
         success: updateData
@@ -128,52 +128,6 @@ $(function () {
           }
       });
     });
-
-    var currentRegion;
-
-    var getCenter = function() {
-      return {
-        lat: map.getCenter().lat(),
-        lng: map.getCenter().lng()
-      }
-    }
-
-    map.addListener('dragend', function(){
-      var centre = map.getCenter();
-      console.log(centre);
-      $.ajax({
-          url: '/api/getInfo',
-          data: getCenter(),
-          method: "post",
-          success: function(resp){
-            console.log(resp);
-          }
-      });
-    });
-
-    var currentRegion;
-
-    var getCenter = function() {
-      return {
-        lat: map.getCenter().lat(),
-        lng: map.getCenter().lng()
-      }
-    }
-
-    map.addListener('dragend', function(){
-      var centre = map.getCenter();
-      console.log(centre);
-      $.ajax({
-          url: '/api/getInfo',
-          data: getCenter(),
-          method: "post",
-          success: function(resp){
-            console.log(resp);
-          }
-      });
-    });
-
-
 
     initFilters(updateData, map);
     initMapMarkers(map);
