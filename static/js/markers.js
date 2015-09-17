@@ -35,7 +35,7 @@ function initMapMarkers(map) {
                         lng: parseFloat(data[i]["longitude"]),
                         lat: parseFloat(data[i]["latitude"]),
                     },
-					icon: '../static/images/marker.png',
+					icon: data[i].icon == undefined ? '../static/images/marker.png' : data[i].icon,
                     animation: google.maps.Animation.BOUNCE,
                     map: map
                 });
