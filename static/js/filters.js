@@ -120,6 +120,4 @@ function initFilters(updateMap, map) {
             }
         });
     }).click();
-
-
 }
