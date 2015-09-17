@@ -66,19 +66,44 @@ class Controller {
 
     public function getInfoAction(){
       $daoRegions = new DAO('regions');
-      $result = $daoRegions->query("select * from districts");
+      $result = $daoRegions->query("select * from regions");
       $lat = $_POST['lat'];
       $lng = $_POST['lng'];
+      $cat = $_POST['category'];
       $currBest = "None";
+      $currRegion = "None";
       $currBestDist = 300;
       foreach($result as $region) {
-        $dist = max((float)$region['longitude'], $lng) - min((float)$region['longitude'], $lng);
-        $dist = $dist + max((float)$region['latitude'], $lat) - min((float)$region['latitude'], $lat);
+        $dist = max((float)$region['long'], $lng) - min((float)$region['long'], $lng);
+        $dist = $dist + max((float)$region['lat'], $lat) - min((float)$region['lat'], $lat);
         if ($dist < $currBestDist){
           $currBestDist = $dist;
-          $currBest = $region['name'];
+          $currBest = $region['id'];
+          $currRegion = $region['name'];
         }
       }
-      return($currBest);
+      $daoJobs = new DAO('jobs');
+      $result2 = [];
+      if ($cat != 0){
+        $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat GROUP BY type;");
+      } else {
+        $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest GROUP BY type;");
+      }
+      $partTime = 0;
+      $fullTime = 0;
+      $contract = 0;
+      foreach($result2 as $res){
+        if ($res['type'] == 'PT') $partTime = $res['count(j.id)'];
+        if ($res['type'] == 'FT') $fullTime = $res['count(j.id)'];
+        if ($res['type'] == 'CT') $contract = $res['count(j.id)'];
+      }
+      if ($cat == 0){
+        $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest");
+      } else {
+        $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat");
+      }
+      $return = [];
+      array_push($return, $partTime, $fullTime, $contract, $currRegion, $averageAge[0]);
+      return($return);
     }
 }

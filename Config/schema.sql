@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `districts` (
   `name` longtext,
   `longitude` text NOT NULL,
   `latitude` text NOT NULL,
+  `region_id` int,
   PRIMARY KEY (`id`)
 );
 
@@ -27,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `jobs` (
   `locationId` int(11) NOT NULL,
   `categoryId` int(11) NOT NULL,
   `listedTime` int(11) NOT NULL,
+  `type` int(1) NOT NULL,
   PRIMARY KEY (`id`, `batchId`)
 );
 

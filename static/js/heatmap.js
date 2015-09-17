@@ -84,7 +84,15 @@ $(function () {
     var currentRegion;
 
     var getCenter = function() {
+      var subCat = $('#subcategory-selection').val();
+      var cat = $('#category-selection').val();
+      if(subCat == 0) {
+          subCat = cat;
+      }
+      console.log(subCat);
       return {
+        category: subCat,
+        time: $('#timeslider-input').val(),
         lat: map.getCenter().lat(),
         lng: map.getCenter().lng()
       }
@@ -98,7 +106,25 @@ $(function () {
           data: getCenter(),
           method: "post",
           success: function(resp){
-            console.log(resp);
+            console.log("Current Region: " + resp[3] + "\nNumber of Jobs: "
+            + (parseInt(resp[0])
+            + parseInt(resp[1])
+            + parseInt(resp[2]))
+            + "\nNumber of FullTime: " + resp[1]
+            + "\nNumber of PartTime: " + resp[0]
+            + "\nNumber of Contract Jobs: " + resp[2]
+            + "\nAverage Age of Listing: "
+            + (Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24) + " days");
+
+            $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
+            + (parseInt(resp[0])
+            + parseInt(resp[1])
+            + parseInt(resp[2]))
+            + "<br>Number of FullTime: " + resp[1]
+            + "<br>Number of PartTime: " + resp[0]
+            + "<br>Number of Contract Jobs: " + resp[2]
+            + "<br>Average Age of Listing: "
+            + (Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24) + " days");
           }
       });
     });

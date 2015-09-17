@@ -3,9 +3,9 @@
   top: 0%;
   left: 80%;
   border: 1px solid;
-  opacity: 0.2;
+  background-color:rgba(0,0,0,0.2);
+  color: black;
   border-radius: 10px;
   width: 20%;
   height: 20%;
-  background-color: black;
 }
