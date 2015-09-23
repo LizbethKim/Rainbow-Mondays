@@ -104,6 +104,7 @@ $(function () {
           data: getCenter(),
           method: "post",
           success: function(resp){
+            console.log(resp);
             $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
             + (parseInt(resp[0])
             + parseInt(resp[1])

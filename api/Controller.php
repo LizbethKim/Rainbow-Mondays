@@ -93,9 +93,9 @@ class Controller {
       $fullTime = 0;
       $contract = 0;
       foreach($result2 as $res){
-        if ($res['type'] == 'PT') $partTime = $res['count(j.id)'];
-        if ($res['type'] == 'FT') $fullTime = $res['count(j.id)'];
-        if ($res['type'] == 'CT') $contract = $res['count(j.id)'];
+        if ($res['type'] == '1') $partTime = $res['count(j.id)'];
+        if ($res['type'] == '0') $fullTime = $res['count(j.id)'];
+        if ($res['type'] == '2') $contract = $res['count(j.id)'];
       }
       if ($cat == 0){
         $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest");
