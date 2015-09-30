@@ -80,8 +80,14 @@ class Controller {
           if ($res['type'] == '0') $fullTime = $res['count(j.id)'];
           if ($res['type'] == '2') $contract = $res['count(j.id)'];
         }
+        $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j");
+        // if ($cat == 0){
+        //   $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j);
+        // } else {
+        //   $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat");
+        // }
         $return = [];
-        array_push($return, "Overall", $fullTime, $partTime, $contract);
+        array_push($return, "Overall", $fullTime, $partTime, $contract, $averageAge[0]);
         return $return;
       }
     }
