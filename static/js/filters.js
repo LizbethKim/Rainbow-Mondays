@@ -20,9 +20,18 @@ function initFilters(updateMap, map) {
             var month = new Date(ui.value*1000).getMonth().toLocaleString();
             var year = new Date(ui.value*1000).getFullYear().toLocaleString();
             $("#amount").val(month+ " / " + year);
-        }
+		
+        },
+		change: function(event, ui){
+			$('#submit-button').click();
+		}
     });
-    $.ajax({
+	var value = ((new Date()).getTime() / 1000);
+	var month = new Date(value*1000).getMonth().toLocaleString();
+	var year = new Date(value*1000).getFullYear().toLocaleString();
+	$("#amount").val(month+ " / " + year);
+	
+		$.ajax({
         url: '/api/getCategories',
         success : function (categories) {
             var el = $('#category-selection');
@@ -52,7 +61,11 @@ function initFilters(updateMap, map) {
                         option.html(categories[i].name);
                         subEl.append(option);
                     }
+					subEl.change(function(){
+						$('#submit-button').click();
+					}).change();
                 }
+				$('#submit-button').click();
             }).change();
         }
     });
@@ -78,15 +91,11 @@ function initFilters(updateMap, map) {
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(optionsBtn[0]);
 
     $('#cancel-button').click(function () {
-
-      if ($('#sticky-sidebar')[0].checked) {
-        console.log("Test here")
-	return;
-      }
-
-      $('.filters').animate({
-            left: '-405px'
-        });
+		map.panTo(new google.maps.LatLng(-41,174));
+		map.setZoom(6);
+		$('#category-selection').val(0);
+		$('#subcategory-selection').val(0);
+		$('#submit-button').click();
     });
 
     $('#map-canvas').mousedown(function () {
@@ -96,7 +105,7 @@ function initFilters(updateMap, map) {
             return;
       }
 
-      $('#cancel-button').click();
+      //$('#cancel-button').click();
     });
 
 
