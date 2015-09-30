@@ -132,7 +132,7 @@ $(function () {
             + "<br>Number of PartTime: " + resp[0]
             + "<br>Number of Contract Jobs: " + resp[2]
             + "<br>Average Age of Listing: "
-            + (Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24) + " days");
+            + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
           }
       });
     });
@@ -153,7 +153,6 @@ $(function () {
         + "<br>Number of FullTime: " + resp[1]
         + "<br>Number of PartTime: " + resp[2]
         + "<br>Number of Contract Jobs: " +resp[3]);
-        console.log(resp[0] + " " + resp[1] + " " + resp[2]);
       }
     });
 
