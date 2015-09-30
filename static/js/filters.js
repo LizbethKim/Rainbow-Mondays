@@ -104,7 +104,9 @@ function initFilters(updateMap, map) {
       if ($('#sticky-sidebar')[0].checked) {
             return;
       }
-
+	  $('.filters').animate({
+		  left: '-405px'
+	  });
       //$('#cancel-button').click();
     });
 
