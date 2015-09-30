@@ -83,28 +83,47 @@ $(function () {
 
     var currentRegion;
 
-    var getCenter = function() {
+    var getCenter = function(x, y) {
       var subCat = $('#subcategory-selection').val();
       var cat = $('#category-selection').val();
       if(subCat == 0) {
           subCat = cat;
       }
-      console.log(subCat);
       return {
         category: subCat,
         time: $('#timeslider-input').val(),
-        lat: map.getCenter().lat(),
-        lng: map.getCenter().lng()
+        lat: x,
+        lng: y,
+        level: 0
       }
     }
 
-    map.addListener('dragend', function(){
+    var getOverallCenter = function() {
+      console.log(map.getCenter());
+      var subCat = $('#subcategory-selection').val();
+      var cat = $('#category-selection').val();
+      if(subCat == 0) {
+          subCat = cat;
+      }
+      var center = map.getCenter();
+      return {
+        category: subCat,
+        time: $('#timeslider-input').val(),
+        lat: center.lat(),
+        lng: center.lng(),
+        level: 0
+      }
+      // return "meow";
+    };
+
+    map.addListener('mousemove', function(event){
+      posX = event.latLng.lat();
+      posY = event.latLng.lng();
       $.ajax({
           url: '/api/getInfo',
-          data: getCenter(),
+          data: getCenter(posX, posY),
           method: "post",
           success: function(resp){
-            console.log(resp);
             $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
             + (parseInt(resp[0])
             + parseInt(resp[1])
@@ -117,21 +136,25 @@ $(function () {
           }
       });
     });
+
+    $(document).mousemove(function(e){
+      $(".info").css({left:e.pageX, top:e.pageY});
+    });
+
     $.ajax({
-        url: '/api/getInfo',
-        data: getCenter(),
-        method: "post",
-        success: function(resp){
-          $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
-          + (parseInt(resp[0])
-          + parseInt(resp[1])
-          + parseInt(resp[2]))
-          + "<br>Number of FullTime: " + resp[1]
-          + "<br>Number of PartTime: " + resp[0]
-          + "<br>Number of Contract Jobs: " + resp[2]
-          + "<br>Average Age of Listing: "
-          + (Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24) + " days");
-        }
+      url: '/api/getOverallInfo',
+      data: getOverallCenter(),
+      method: "post",
+      success: function(resp){
+        $(".overallInfo").html(resp[0] + "<br>Number of Jobs "
+        + (parseInt(resp[1])
+        + parseInt(resp[2])
+        + parseInt(resp[3]))
+        + "<br>Number of FullTime: " + resp[1]
+        + "<br>Number of PartTime: " + resp[2]
+        + "<br>Number of Contract Jobs: " +resp[3]);
+        console.log(resp[0] + " " + resp[1] + " " + resp[2]);
+      }
     });
 
     initFilters(updateData, map);
