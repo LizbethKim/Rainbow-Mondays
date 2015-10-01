@@ -81,11 +81,6 @@ class Controller {
           if ($res['type'] == '2') $contract = $res['count(j.id)'];
         }
         $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j");
-        // if ($cat == 0){
-        //   $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j);
-        // } else {
-        //   $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat");
-        // }
         $return = [];
         array_push($return, "Overall", $fullTime, $partTime, $contract, $averageAge[0]);
         return $return;
@@ -94,6 +89,9 @@ class Controller {
 
     public function getInfoAction(){
       $daoRegions = new DAO('regions');
+      $lat = $_POST['lat'];
+      $lng = $_POST['lng'];
+      $cat = $_POST['category'];
       $level = $_POST['level'];
       $result = [];
       if ($level == 0){
@@ -101,9 +99,6 @@ class Controller {
       } else {
         $result = $daoRegions->query("select * from districts");
       }
-      $lat = $_POST['lat'];
-      $lng = $_POST['lng'];
-      $cat = $_POST['category'];
       $currBest = "None";
       $currRegion = "None";
       $currBestDist = 300;
@@ -120,10 +115,18 @@ class Controller {
       $result2 = [];
       if ($cat != 0 && $level == 0){
         $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat GROUP BY type");
+        $result2 = array_filter($result2);
+        if (empty($result2)){
+          $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id JOIN categories c on j.categoryId = c.id WHERE d.region_id = $currBest AND c.parentCategoryId = $cat GROUP BY type");
+        }
       } elseif ($cat == 0 && $level == 0) {
         $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest GROUP BY type");
       } elseif ($cat != 0 && $level != 0){
         $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d on j.locationId = d.id WHERE d.id = $currBest");
+        $result2 = array_filter($result2);
+        if (empty($result2)){
+          $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id JOIN categories c on j.categoryId = c.id WHERE d.region_id = $currBest AND c.parentCategoryId = $cat GROUP BY type");
+        }
       } else {
         $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.id = $currBest GROUP BY type");
       }
