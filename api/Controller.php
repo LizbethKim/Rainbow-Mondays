@@ -142,6 +142,10 @@ class Controller {
         $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest");
       } else {
         $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat");
+        $averageAge = array_filter($averageAge[0]);
+        if (empty($averageAge[0])){
+          $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id JOIN categories c on j.categoryId = c.id WHERE d.region_id = $currBest AND c.parentCategoryId = $cat");
+        }
       }
       $return = [];
       array_push($return, $partTime, $fullTime, $contract, $currRegion, $averageAge[0]);
