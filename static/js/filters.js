@@ -1,16 +1,29 @@
+/**
+ * This class is responsible for handling all of filtering that goes with side bar * 
+ * 
+ */
+
 function initFilters(updateMap, map) {
 
+     
+    // This is responsible for selecting the step for the slider
+    // based on the selection of the radio button.
     $('input.example').on('change', function() {
     $('input.example').not(this).prop('checked', false);
 	    if ($('#slider-month')[0].checked) {
+		// This happens when the month radio button is ticked
 		$("#timeslider").slider("option", "step", (4*7*24*60*60));
+	       
 	    }else if ($('#slider-year')[0].checked) {
+		// this happens when the year button is checked
 		$("#timeslider").slider("option", "step", (365*24*60*60));
+	          
 	    }
 
     });
 
-
+    // creates the slider it uses linux time as the server
+    // this is due to the server that runs our website is using linux
     $("#timeslider").slider({
         value:((new Date()).getTime() / 1000),
         min: ((new Date()).getTime() / 1000) - (6*12*4*7*24*60*60),
@@ -26,15 +39,20 @@ function initFilters(updateMap, map) {
 			$('#submit-button').click();
 		}
     });
+    
+	// creates the inital value to be displayed for the time slider
 	var value = ((new Date()).getTime() / 1000);
 	var month = new Date(value*1000).getMonth().toLocaleString();
 	var year = new Date(value*1000).getFullYear().toLocaleString();
 	$("#amount").val(month+ " / " + year);
 	
-		$.ajax({
+	// retrieves the catergories from the server then populates the drop boxes with 
+	// the correct values based on what has been recieved from the trade me servers
+	$.ajax({
         url: '/api/getCategories',
         success : function (categories) {
             var el = $('#category-selection');
+	    // populates the categories drop box
             for(var i = 0; i < categories.length; i++) {
                 if(categories[i].parentCategory != 0) {
                     continue;
@@ -45,6 +63,8 @@ function initFilters(updateMap, map) {
                 el.append(option);
             }
             el.change(function () {
+		// if the there is no filter or no selction has been made in the first drop box
+		// the second drop box is disabled.
                 var subEl = $('#subcategory-selection');
                 subEl.html('<option value="0">No Filter</option>');
                 if(el.val() == 0) {
@@ -52,6 +72,7 @@ function initFilters(updateMap, map) {
                 } else {
                     subEl.attr('disabled', null);
                     var parentId = el.val();
+		    // populates the sub catergories drop box
                     for(var i = 0; i < categories.length; i++) {
                         if(categories[i].parentCategory != parentId) {
                             continue;
@@ -61,12 +82,13 @@ function initFilters(updateMap, map) {
                         option.html(categories[i].name);
                         subEl.append(option);
                     }
-					subEl.change(function(){
-						$('#submit-button').click();
-					}).change();
-                }
-				$('#submit-button').click();
-            }).change();
+		subEl.change(function(){
+		$('#submit-button').click();
+		}).change();		  
+		}
+		$('#submit-button').click();
+	      
+	    }).change();
         }
     });
     var getFilters = function () {
@@ -81,6 +103,7 @@ function initFilters(updateMap, map) {
         });
     };
 
+    // creates the hamburger icon
     var optionsBtn = $('<i class="options-btn glyphicon glyphicon-list"></i>');
     optionsBtn.click(function () {
         $('.filters').animate({
@@ -88,9 +111,11 @@ function initFilters(updateMap, map) {
         });
         return(false);
     });
+    // sets the hambrger icon in the top left hand corner
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(optionsBtn[0]);
 
-    $('#cancel-button').click(function () {
+    // this handles what happens when a
+    $('#reset-button').click(function () {
 		map.panTo(new google.maps.LatLng(-41,174));
 		map.setZoom(6);
 		$('#category-selection').val(0);
@@ -98,23 +123,24 @@ function initFilters(updateMap, map) {
 		$('#submit-button').click();
     });
 
+     // handles the mouse event when a user clicks on the map canvas
     $('#map-canvas').mousedown(function () {
-
-
+      // if the sticky option is checked then the side bar will stay there
       if ($('#sticky-sidebar')[0].checked) {
             return;
       }
-	  $('.filters').animate({
-		  left: '-405px'
-	  });
-      //$('#cancel-button').click();
+      $('.filters').animate({
+	left: '-405px'
+      });
     });
 
 
 
-
+    // this is the "submit button" that gets pressed everytime something needs to be submitted
+    // to the server. 
     $('#submit-button').click(function () {
         var body = $('body')[0];
+	// creates a spinner to indicate the page is loading
         var spinner = new Spinner().spin(body);
         var overlay = $('<div id="overlay"></div>')
         overlay.appendTo(body);
