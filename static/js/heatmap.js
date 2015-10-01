@@ -1,19 +1,20 @@
 $(function () {
     var map,
-    zoom = 6,
+    currentScrollCount= 0,
+    zoomedIn = false,
     heatmap,
     mapOptions = {
-        zoom: zoom,
+        zoom: 6,
         center: new google.maps.LatLng(-41, 174),
         mapTypeId: google.maps.MapTypeId.MAP,
-        zoomControl: true,
+        zoomControl: false,
         streetViewControl: false,
         draggable: true,
-        scrollwheel: true,
+        scrollwheel: false,
         disableDefaultUI: true,
         panControl: true,
         maxZoom: 11,
-        minZoom: zoom,
+        minZoom: 0,
     }, updateData = function (rawData) {
 
 
@@ -45,7 +46,30 @@ $(function () {
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  $.ajax({
+    $(window).bind('mousewheel', function(event) {
+        if (event.originalEvent.wheelDelta >= 0) {
+            if(currentScrollCount<11) {
+                currentScrollCount++;
+            }
+        }
+        else {
+            if(currentScrollCount>-11){
+                currentScrollCount--;
+            }
+        }
+
+        if(currentScrollCount > 10){
+            map.setZoom(6);
+            zoomedIn = false;
+        }
+        else if(currentScrollCount < -10){
+            map.setZoom(9);
+            zoomedIn = true;
+        }
+    });
+
+
+    $.ajax({
         url: '/api/list',
         success: updateData
     });
