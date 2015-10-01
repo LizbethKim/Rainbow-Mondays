@@ -8,4 +8,4 @@ CREATE TABLE regions
   'long' INT NOT NULL,
   lat INT NOT NULL
 );
-ALTER TABLE jobs ADD COLUMN `type` varchar(2);
+ALTER TABLE jobs ADD COLUMN `type` int(1);

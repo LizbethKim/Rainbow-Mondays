@@ -93,19 +93,20 @@ $(function () {
             data: getCenter(posX, posY),
             method: "post",
             success: function(resp){
-                $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
-                + (parseInt(resp[0])
-                + parseInt(resp[1])
-                + parseInt(resp[2]))
-                + "<br>Number of FullTime: " + resp[1]
-                + "<br>Number of PartTime: " + resp[0]
-                + "<br>Number of Contract Jobs: " + resp[2]
-                + "<br>Average Age of Listing: "
-                + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
-                $(".info").css({
-                    left: event.pixel.x + 10,
-                    top: event.pixel.y + 10
-                }).show();
+              console.log(resp);
+              $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
+              + (parseInt(resp[0])
+              + parseInt(resp[1])
+              + parseInt(resp[2]))
+              + "<br>Number of FullTime: " + resp[1]
+              + "<br>Number of PartTime: " + resp[0]
+              + "<br>Number of Contract Jobs: " + resp[2]
+              + "<br>Average Age of Listing: "
+              + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
+              $(".info").css({
+                  left: event.pixel.x + 10,
+                  top: event.pixel.y + 10
+              }).show();
             }
         });
 
