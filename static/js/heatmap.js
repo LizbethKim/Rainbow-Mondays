@@ -102,7 +102,10 @@ $(function () {
                 + "<br>Number of Contract Jobs: " + resp[2]
                 + "<br>Average Age of Listing: "
                 + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
-                $(".info").css({left:event.pixel.x, top:event.pixel.y}).show();
+                $(".info").css({
+                    left: event.pixel.x + 10,
+                    top: event.pixel.y + 10
+                }).show();
             }
         });
 
@@ -111,7 +114,6 @@ $(function () {
         clearTimeout(mouseMoveTimer);
         mouseMoveTimer = setTimeout(updateStats.bind(this, arguments[0]), 500);
     });
-
     $(document).mousemove(function(event){
         $(".info").hide();
     });
