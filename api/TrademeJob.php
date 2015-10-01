@@ -97,7 +97,7 @@ class TrademeJob implements Job {
     /**
      * @return int
      */
-    private function getListedTime() {
+    public function getListedTime() {
         $time = $this->dataset['StartDate'];
         return((int)((float)preg_replace('/[^0-9]/', '', $time) / 1000.0));
     }

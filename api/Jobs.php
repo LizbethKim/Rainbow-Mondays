@@ -40,10 +40,10 @@ class Jobs {
         $startTime = time() - (60*60*24);
         $endTime = $startTime + $period;
         return $dao->query("SELECT
-                                listedTime, longitude, latitude, jobs.id, jobTitle AS title
+                                listedTime, longitude, latitude, jobs.id as id, jobTitle AS title
                               FROM jobs
                               JOIN districts
-                                ON locationId = districts.id
+                              ON locationId = districts.id
                               WHERE listedTime > $startTime
                               AND listedTime < $endTime
                               AND batchId = $maxBatchId");
