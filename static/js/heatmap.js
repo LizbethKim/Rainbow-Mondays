@@ -85,6 +85,7 @@ $(function () {
     };
 
     var mouseMoveTimer = 0;
+    var infoPanel = $(".info");
     var updateStats = function(event){
         posX = event.latLng.lat();
         posY = event.latLng.lng();
@@ -116,7 +117,7 @@ $(function () {
         mouseMoveTimer = setTimeout(updateStats.bind(this, arguments[0]), 500);
     });
     $(document).mousemove(function(event){
-        $(".info").hide();
+        infoPanel.hide();
     });
 
     $.ajax({

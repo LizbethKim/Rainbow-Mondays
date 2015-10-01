@@ -1,3 +1,8 @@
+/**
+ * This file is responible for creating and handling the markers that how the jobs on the map
+ * and handles the info windows that show infomation on the job listings
+ */
+
 function initMapMarkers(map) {
     var data = [];
     var openMarker;
