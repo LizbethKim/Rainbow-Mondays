@@ -8,12 +8,19 @@ $api->updateJobCategories();
 $api->runQuery();
 
 $daoJobs = new DAO('jobs');
-$batchId = (int)$daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'] + 1;
-$daoBatch = new DAO('batches');
 
+$result = $daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'];
+if(count($result) && isset($result[0]['batchId'])) {
+    $batchId = (int)$result[0]['batchId'] + 1;
+} else {
+    $batchId = 1;
+}
+
+$daoBatch = new DAO('batches');
 foreach($api as $listingId=>$job) {
     $dataset = $job->getDataset();
     $dataset['batchId'] = (int)$batchId;
+
     try {
         $daoJobs->insert($dataset);
         echo("Listing id: $listingId, title: " . $job->getTitle() . "\n");
