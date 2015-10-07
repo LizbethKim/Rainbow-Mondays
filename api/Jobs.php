@@ -5,7 +5,6 @@
  * Date: 6/08/15
  * Time: 2:07 PM
  */
-include 'LiveJobCache.php';
 
 class Jobs {
     /** @var DAO */
@@ -76,10 +75,10 @@ class Jobs {
         $latestCacheTime = $daoCacheLog->query("SELECT time FROM cache_log WHERE id = (SELECT MAX(id) FROM cache_log)")[0]["time"];
        if($count == 0) {
             $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
-            updateCache();
+            $this->updateCache();
         }elseif(($latestCacheTime + 1 * 60) <= time()){
            $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
-           updateCache();
+           $this->updateCache();
        }
 
         $date = new DateTime();
@@ -202,4 +201,30 @@ class Jobs {
         }
         return($build);
     }
+
+
+    private function updateCache() {
+
+        $dao_liveCache = new DAO("live_cache");
+        //$dao_cache_log = new DAO('cache_log');
+        //$dao_cache_log->insert(array('date' => time()));
+        $previousLatest = (int)$dao_liveCache->query("select max(listedTime) as latest from live_cache")[0]["latest"];
+
+        $api = new TrademeJobsApi();
+        $api->setConsumerKey('6CEAB3585FFA4AEDB00EF2CFCEFABEF3');
+        $api->setSignature('70941C9DF7CF72EFD272387821C4982E');
+        $api->updateJobCategories();
+        $api->runQuery();
+
+        foreach ($api as $job) {
+            if ($job->getListedTime() <= $previousLatest) {
+                break;
+            }
+
+            $dataset = $job->getLiveDataset();
+            $dao_liveCache->insert($dataset);
+
+        }
+    }
+
 }
