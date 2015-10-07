@@ -92,7 +92,6 @@ $(function () {
     };
 
     var getOverallCenter = function() {
-      console.log(map.getCenter());
       var subCat = $('#subcategory-selection').val();
       var cat = $('#category-selection').val();
       if(subCat == 0) {
@@ -118,7 +117,6 @@ $(function () {
             data: getCenter(posX, posY),
             method: "post",
             success: function(resp){
-              console.log(resp);
               $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
               + (parseInt(resp[0])
               + parseInt(resp[1])
@@ -149,7 +147,6 @@ $(function () {
       data: getOverallCenter(),
       method: "post",
       success: function(resp){
-        console.log(resp);
         $(".overallInfo").html(resp[0] + "<br>Number of Jobs "
         + (parseInt(resp[1])
         + parseInt(resp[2])
