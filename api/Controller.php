@@ -43,11 +43,69 @@ class Controller {
         ));
     }
 
+    public function makeLiveJobsAction(){
+        $daoFakeCacheJobs = new DAO('live_cache');
+        $fakeJobs = array ();
+        $ids = $daoFakeCacheJobs->query("SELECT id from districts");
+        $fakeJobId = $daoFakeCacheJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
+        $fakeIcons = $daoFakeCacheJobs->query("SELECT icon_url FROM live_cache");
+
+        for($a = 0; $a < 5;$a++) {
+            $fakeJobs[] = array(
+                'id' => ++$fakeJobId,
+                'jobTitle' => "Test Job",
+                'icon_url' => (string)$fakeIcons[rand(0, count($fakeIcons))-1]['icon_url'],
+                'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
+                'listedTime' => time() + rand(10, 30) - (2*60)
+            );
+        }
+        foreach($fakeJobs as $fakeJob) {
+            $daoFakeCacheJobs->insert($fakeJob);
+        }
+        return(array(
+            'error' => false
+        ));
+    }
+
+    public function makeSearchesAction(){
+        $daoFakeSearches = new DAO('searches');
+        $fakeSearches = array();
+        $searches = $daoFakeSearches->query('SELECT jobTitle FROM jobs');
+        $ids = $daoFakeSearches->query("SELECT id from districts");
+        $categories = $daoFakeSearches->query('SELECT categoryName FROM categories');
+
+        for($a = 0; $a < 5; $a++){
+            $fakeSearches[] = array(
+                'serach_term' => (string) $searches[rand(0, count($searches))-1]['jobTitle'],
+                'category' => (string) $categories[rand(0, count($categories))-1]['categoryName'],
+                'sub_category' => (string) $categories[rand(0, count($categories))-1]['categoryName'],
+                'time_searched' => time() + rand(10, 30) - (2*60),
+                'locationId' => (int)$ids[rand(0, count($ids))]['id']
+            );
+        }
+
+        foreach($fakeSearches as $fakeSearch){
+            $daoFakeSearches->insert($fakeSearch);
+        }
+
+        return(array(
+            'error' => false
+        ));
+
+    }
+
     public function getFeedAction() {
         $jobs = new Jobs();
         return $jobs->getFeed(5*60);
 
     }
+
+    public function getLiveFeedAction() {
+        $jobs = new Jobs();
+        return $jobs->getLiveFeed();
+
+    }
+
 
     public function getRegionsAction(){
         $daoRegions = new DAO('regions');

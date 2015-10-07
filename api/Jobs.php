@@ -5,6 +5,7 @@
  * Date: 6/08/15
  * Time: 2:07 PM
  */
+include 'LiveJobCache.php';
 
 class Jobs {
     /** @var DAO */
@@ -13,6 +14,12 @@ class Jobs {
     private static $daoLocations;
     /** @var DAO */
     private static $daoCategories;
+    /** @var DAO */
+    private static $daoLiveCache;
+    /** @var DAO */
+    private static $daoCacheLog;
+    /** @var DAO */
+    private static $daoSearches;
     /**  @var array */
     private $filters;
 
@@ -25,6 +32,15 @@ class Jobs {
         }
         if(self::$daoCategories == null) {
             self::$daoCategories = new DAO('categories');
+        }
+        if(self::$daoLiveCache == null){
+            self::$daoLiveCache = new DAO('live_cache');
+        }
+        if(self::$daoCacheLog == null){
+            self::$daoCacheLog = new DAO('cache_log');
+        }
+        if(self::$daoSearches == null){
+            self::$daoSearches = new DAO('searches');
         }
     }
 
@@ -47,6 +63,52 @@ class Jobs {
                               WHERE listedTime > $startTime
                               AND listedTime < $endTime
                               AND batchId = $maxBatchId");
+
+    }
+
+    function getLiveFeed(){
+
+        $daoCacheLog = self::$daoCacheLog;
+        $time = time();
+
+        //If the cache_log table is empty add the initially else check if it's been more than 5 minutes
+        $count = $daoCacheLog->query("SELECT count(*) from cache_log")[0]["count(*)"];
+        $latestCacheTime = $daoCacheLog->query("SELECT time FROM cache_log WHERE id = (SELECT MAX(id) FROM cache_log)")[0]["time"];
+       if($count == 0) {
+            $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
+            updateCache();
+        }elseif(($latestCacheTime + 1 * 60) <= time()){
+           $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
+           updateCache();
+       }
+
+        $date = new DateTime();
+        $startTime = $date->getTimestamp();
+        $endTime = $startTime - 2 * 60;
+
+        $daoLiveCache = self::$daoLiveCache;
+        $daoSearches = self::$daoSearches;
+
+
+        return [$daoLiveCache->query("SELECT listedTime, longitude, latitude, live_cache.jobTitle AS title, icon_url As icon
+                                 FROM  live_cache
+                                 JOIN  districts
+                                 ON    live_cache.locationId = districts.id
+                                 WHERE listedTime < $startTime
+                                 AND   listedTime > $endTime"),
+
+
+                $daoSearches->query("SELECT serach_term, longitude, latitude, category, sub_category, time_searched
+                                 FROM  searches
+                                 JOIN  districts
+                                 ON    searches.locationId = districts.id
+                                 WHERE time_searched < $startTime
+                                 AND   time_searched > $endTime")
+        ];
+
+    }
+
+    public function getSearchFeed(){
 
     }
 

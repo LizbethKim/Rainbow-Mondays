@@ -45,6 +45,30 @@ CREATE TABLE regions
   lat INT NOT NULL
 );
 
+CREATE TABLE live_cache
+(
+  id INT NOT NULL,
+  jobTitle TEXT NOT NULL,
+  icon_url TEXT NOT NULL,
+  locationId INT NOT NULL,
+  listedTime INT NOT NULL
+);
+
+CREATE TABLE cache_log
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  time INT NOT NULL
+);
+
+CREATE TABLE searches
+(
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  serach_term TEXT NOT NULL,
+  category TEXT NOT NULL ,
+  sub_category TEXT NOT NULL,
+  time_searched INT NOT NULL,
+  locationId INT NOT NULL
+);
 
 CREATE USER 'rainbowmondays'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON * . * TO 'rainbowmondays'@'localhost';
