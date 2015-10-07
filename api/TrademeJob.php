@@ -26,6 +26,14 @@ class TrademeJob implements Job {
     }
 
     /**
+     * @return string
+     */
+    public function getLogoUrl(){
+        return ((string)$this->dataset['Agency']['Logo']);
+    }
+
+
+    /**
      * @return int
      */
     public function getId() {
@@ -112,6 +120,20 @@ class TrademeJob implements Job {
             'categoryId' => $this->getCategoryId(),
             'listedTime' => (int)$this->getListedTime(),
             'type' => $this->getType()
+        );
+        return($build);
+    }
+
+    /**
+     * @return array
+     */
+    public function getLiveDataset(){
+        $build = array(
+            'id' => $this->getId(),
+            'jobTitle' => $this->getTitle(),
+            'icon_url' => $this->getLogoUrl(),
+            'locationId' => $this->getLocationId(),
+            'listedTime' => (int)$this->getListedTime()
         );
         return($build);
     }
