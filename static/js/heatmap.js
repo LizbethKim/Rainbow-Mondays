@@ -114,15 +114,15 @@ $(function () {
             data: getCenter(posX, posY),
             method: "post",
             success: function(resp){
-              $(".info").html("Current Region: " + resp[3] + "<br>Number of Jobs: "
-              + (parseInt(resp[0])
-              + parseInt(resp[1])
-              + parseInt(resp[2]))
-              + "<br>Number of FullTime: " + resp[1]
-              + "<br>Number of PartTime: " + resp[0]
-              + "<br>Number of Contract Jobs: " + resp[2]
-              + "<br>Average Age of Listing: "
-              + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
+              $(".info").html("<table><tr><td colspan = '2'><b>"+resp[3]+"</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
+        + (parseInt(resp[0])
+        + parseInt(resp[1])
+        + parseInt(resp[2])) + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
+        + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
+        + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
               $(".info").css({
                   left: event.pixel.x + 10,
                   top: event.pixel.y + 10
@@ -144,15 +144,15 @@ $(function () {
       data: getOverallCenter(),
       method: "post",
       success: function(resp){
-        $(".overallInfo").html(resp[0] + "<br>Number of Jobs "
+        $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>New Zealand</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
         + (parseInt(resp[1])
         + parseInt(resp[2])
-        + parseInt(resp[3]))
-        + "<br>Number of FullTime: " + resp[1]
-        + "<br>Number of PartTime: " + resp[2]
-        + "<br>Number of Contract Jobs: " +resp[3]
-        + "<br>Average Age of Listing: "
-        + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days");
+        + parseInt(resp[3])) + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
+        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
+        + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
+        + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
       }
     });
 
