@@ -45,23 +45,23 @@ $(function () {
 
     $(window).bind('mousewheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
-            if(currentScrollCount<11) {
+            if(currentScrollCount<6) {
                 currentScrollCount++;
             }
         }
         else {
-            if(currentScrollCount>-11){
+            if(currentScrollCount>-6){
                 currentScrollCount--;
             }
         }
 
-        if(currentScrollCount > 10){
-            map.setZoom(6);
-            zoomedIn = false;
-        }
-        else if(currentScrollCount < -10){
+        if(currentScrollCount > 5){
             map.setZoom(9);
             zoomedIn = true;
+        }
+        else if(currentScrollCount < -5){
+            map.setZoom(6);
+            zoomedIn = false;
         }
     });
 
