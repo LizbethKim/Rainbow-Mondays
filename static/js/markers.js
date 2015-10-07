@@ -40,7 +40,6 @@ function initMapMarkers(map) {
             var timeSeconds = parseInt(cacheData[i]["listedTime"]) + (3 * 60);
             //if (parseInt(((new Date()).getTime() / 1000) - (60 * 2)) == timeSeconds) {
             if (parseInt(((new Date()).getTime() / 1000)) == timeSeconds) {
-                console.log("Job Marker");
                 var marker = new google.maps.Marker({
                     position: {
                         lng: parseFloat(cacheData[i]["longitude"]),
@@ -75,7 +74,6 @@ function initMapMarkers(map) {
             var timeSeconds = parseInt(searcheData[i]["time_searched"]) + (3 * 60);
             //if (parseInt(((new Date()).getTime() / 1000) - (60 * 2)) == timeSeconds) {
             if (parseInt(((new Date()).getTime() / 1000)) == timeSeconds) {
-                console.log("Searche Marker");
                 var marker = new google.maps.Marker({
                     position: {
                         lng: parseFloat(searcheData[i]["longitude"]),
@@ -116,7 +114,6 @@ function initMapMarkers(map) {
                 for(var a = 0; a < resp[1].length;a ++) {
                     data[1].push(resp[1][a]);
                 }
-                console.log(data);
             }
         });
     };
