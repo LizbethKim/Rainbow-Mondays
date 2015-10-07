@@ -15,3 +15,8 @@
     background-color: #ffffca;
     color: #000023;
 }
+
+.align-right {
+	padding-left:5px;
+	text-align:right;
+}
