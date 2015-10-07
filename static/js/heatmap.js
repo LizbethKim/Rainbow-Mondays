@@ -95,12 +95,14 @@ $(function () {
           subCat = cat;
       }
       var center = map.getCenter();
+      var lvl = 0;
+      if (zoomedIn) lvl = 1;
       return {
         category: subCat,
         time: $('#timeslider-input').val(),
         lat: center.lat(),
         lng: center.lng(),
-        level: 0
+        level: lvl
       };
     };
 
