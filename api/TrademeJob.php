@@ -125,16 +125,14 @@ class TrademeJob implements Job {
     }
 
     /**
+     * Same as getDataset but also has the job logo
      * @return array
      */
     public function getLiveDataset(){
-        $build = array(
-            'id' => $this->getId(),
-            'jobTitle' => $this->getTitle(),
-            'icon_url' => $this->getLogoUrl(),
-            'locationId' => $this->getLocationId(),
-            'listedTime' => (int)$this->getListedTime()
-        );
+        $build = $this->getDataset();
+        $build['icon_url'] = $this->getLogoUrl();
+        unset($build['categoryId']);
+        unset($build['type']);
         return($build);
     }
 

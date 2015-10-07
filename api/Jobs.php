@@ -65,52 +65,34 @@ class Jobs {
 
     }
 
-    function getLiveFeed(){
-
-        $daoCacheLog = self::$daoCacheLog;
-        $time = time();
-
-        //If the cache_log table is empty add the initially else check if it's been more than 5 minutes
-        $count = $daoCacheLog->query("SELECT count(*) from cache_log")[0]["count(*)"];
-        $latestCacheTime = $daoCacheLog->query("SELECT time FROM cache_log WHERE id = (SELECT MAX(id) FROM cache_log)")[0]["time"];
-       if($count == 0) {
-            $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
-            $this->updateCache();
-        }elseif(($latestCacheTime + 1 * 60) <= time()){
-           $daoCacheLog->query("INSERT INTO cache_log (time) VALUES ($time)");
-           $this->updateCache();
-       }
-
-        $date = new DateTime();
-        $startTime = $date->getTimestamp();
-        $endTime = $startTime - 2 * 60;
-
+    /**
+     *
+     * @return array
+     * @throws Exception
+     */
+    function getLiveFeed() {
         $daoLiveCache = self::$daoLiveCache;
         $daoSearches = self::$daoSearches;
 
+        $this->updateCache();
 
-        return [$daoLiveCache->query("SELECT listedTime, longitude, latitude, live_cache.jobTitle AS title, icon_url As icon
-                                 FROM  live_cache
-                                 JOIN  districts
-                                 ON    live_cache.locationId = districts.id
-                                 WHERE listedTime < $startTime
-                                 AND   listedTime > $endTime"),
+        $startTime = time() - 10*60;
+        $endTime = time() - 5*60;
 
-
-                $daoSearches->query("SELECT serach_term, longitude, latitude, category, sub_category, time_searched
-                                 FROM  searches
-                                 JOIN  districts
-                                 ON    searches.locationId = districts.id
-                                 WHERE time_searched < $startTime
-                                 AND   time_searched > $endTime")
-        ];
-
+        $jobs = $daoLiveCache->query("  SELECT listedTime, longitude, latitude, live_cache.jobTitle AS title, icon_url As icon
+                                        FROM  live_cache
+                                        JOIN  districts
+                                        ON    live_cache.locationId = districts.id
+                                        WHERE $startTime < listedTime
+                                        AND   $endTime > listedTime");
+        $searches = $daoSearches->query("  SELECT serach_term, longitude, latitude, category, sub_category, time_searched
+                                           FROM  searches
+                                           JOIN  districts
+                                           ON    searches.locationId = districts.id
+                                           WHERE $startTime < time_searched
+                                           AND   $endTime > time_searched");
+        return array($jobs,$searches);
     }
-
-    public function getSearchFeed(){
-
-    }
-
     /**
      * @return array
      * @throws Exception
@@ -202,29 +184,28 @@ class Jobs {
         return($build);
     }
 
-
     private function updateCache() {
+        $mem = new Memcached(0);
+        $mem->addServer('127.0.0.1', 11211);
 
-        $dao_liveCache = new DAO("live_cache");
-        //$dao_cache_log = new DAO('cache_log');
-        //$dao_cache_log->insert(array('date' => time()));
-        $previousLatest = (int)$dao_liveCache->query("select max(listedTime) as latest from live_cache")[0]["latest"];
+        $time = $mem->get('cache_log');
+        if($time === false || (int)$time < (time() - 5*60)) {
 
-        $api = new TrademeJobsApi();
-        $api->setConsumerKey('xxxxxxxxxxxxxxxxxxxxxxxxxx');
-        $api->setSignature('xxxxxxxxxxxxxxxxxxxxxxxxxx');
-        $api->updateJobCategories();
-        $api->runQuery();
+            $dao_liveCache = new DAO("live_cache");
 
-        foreach ($api as $job) {
-            if ($job->getListedTime() <= $previousLatest) {
-                break;
+            $api = new TrademeJobsApi();
+            $api->setConsumerKey(CONSUMER_KEY);
+            $api->setSignature(SIGNATURE);
+            $api->runQuery();
+
+            foreach ($api as $job) {
+                if ($job->getListedTime() <= time() - 10*60) {
+                    break;
+                }
+                $dataset = $job->getLiveDataset();
+                $dao_liveCache->insert($dataset);
             }
-
-            $dataset = $job->getLiveDataset();
-            $dao_liveCache->insert($dataset);
-
+            $mem->set('cache_log', time());
         }
     }
-
 }

@@ -37,7 +37,8 @@ function initMapMarkers(map) {
         //For the jobs
         for (var i = 0; i < data[0].length; i++) {
             var cacheData = data[0];
-            var timeSeconds = parseInt(cacheData[i]["listedTime"]) + (3 * 60);
+            var timeSeconds = parseInt(cacheData[i]["listedTime"]) + (10 * 60);
+            console.log(timeSeconds);
             //if (parseInt(((new Date()).getTime() / 1000) - (60 * 2)) == timeSeconds) {
             if (parseInt(((new Date()).getTime() / 1000)) == timeSeconds) {
                 var marker = new google.maps.Marker({
@@ -45,7 +46,7 @@ function initMapMarkers(map) {
                         lng: parseFloat(cacheData[i]["longitude"]),
                         lat: parseFloat(cacheData[i]["latitude"]),
                     },
-					icon: cacheData[i]['icon'] == undefined ? '../static/images/marker.png' : cacheData[i].icon,
+					icon: cacheData[i]['icon'] == '' ? '../static/images/marker.png' : cacheData[i].icon,
                     animation: google.maps.Animation.BOUNCE,
                     map: map
                 });
@@ -71,8 +72,7 @@ function initMapMarkers(map) {
         //For the searches
         for (var i = 0; i < data[1].length; i++) {
             var searcheData = data[1];
-            var timeSeconds = parseInt(searcheData[i]["time_searched"]) + (3 * 60);
-            //if (parseInt(((new Date()).getTime() / 1000) - (60 * 2)) == timeSeconds) {
+            var timeSeconds = parseInt(searcheData[i]["time_searched"]) + (10 * 60);
             if (parseInt(((new Date()).getTime() / 1000)) == timeSeconds) {
                 var marker = new google.maps.Marker({
                     position: {
@@ -85,8 +85,6 @@ function initMapMarkers(map) {
                 marker.addListener('click', function (i) {
                     infoContent.find('#title').html("SEARCH TERM: " + searcheData[i]["serach_term"]);
                     infoContent.find('#date').html(new Date(parseInt(searcheData[i]["time_searched"]) * 1000));
-                    //infoContent.find("#link").style.visibility = "";
-
 
                     openMarker = this;
                     infowindow.open(map, this);
@@ -108,11 +106,10 @@ function initMapMarkers(map) {
         $.ajax({
             url: '/api/getLiveFeed',
             success: function (resp) {
-                for(var a = 0; a < resp[0].length;a ++) {
-                    data[0].push(resp[0][a]);
-                }
-                for(var a = 0; a < resp[1].length;a ++) {
-                    data[1].push(resp[1][a]);
+                for(var b = 0;b < data.length;b++) {
+                    for(var a = 0; a < resp[b].length;a++) {
+                        data[b].push(resp[b][a]);
+                    }
                 }
             }
         });

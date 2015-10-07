@@ -12,6 +12,7 @@
     <body>
         <div>
             <button id="bt1">Make Jobs</button>
+            <button id="bt2">Make Live Jobs</button>
         </div>
     </body>
 
@@ -19,6 +20,19 @@
         $("#bt1").click(function() {
             $.ajax({
                 url: "/api/makeJobs",
+                success: function(response){
+                    if(response.error){
+                        alert("failed to insert 'fake jobs'");
+                    }
+                    else{
+                        alert("Fake jobs have successfully been inserted!");
+                    }
+                }
+            });
+        });
+        $("#bt2").click(function() {
+            $.ajax({
+                url: "/api/makeLiveJobs",
                 success: function(response){
                     if(response.error){
                         alert("failed to insert 'fake jobs'");
