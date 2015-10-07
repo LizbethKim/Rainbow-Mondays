@@ -16,9 +16,6 @@ $(function () {
         maxZoom: 11,
         minZoom: 0,
     }, updateData = function (rawData) {
-
-
-
         var build = [];
         $(rawData).each(function () {
             build.push({
