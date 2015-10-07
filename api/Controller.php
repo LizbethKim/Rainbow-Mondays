@@ -142,6 +142,34 @@ class Controller {
         $return = [];
         array_push($return, "Overall", $fullTime, $partTime, $contract, $averageAge[0]);
         return $return;
+      } else {
+        $daoJobz = new DAO('jobs');
+        $daoRegions = new DAO('regions');
+        $districts = $daoRegions->query("select * from regions");
+
+        foreach($result as $region) {
+          $dist = max((float)$region['long'], $lng) - min((float)$region['long'], $lng);
+          $dist = $dist + max((float)$region['lat'], $lat) - min((float)$region['lat'], $lat);
+          if ($dist < $currBestDist){
+            $currBestDist = $dist;
+            $currBest = $region['id'];
+            $currRegion = $region['name'];
+          }
+        }
+
+        $query = $daoJobz->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest GROUP BY type");
+        $partTime = 0;
+        $fullTime = 0;
+        $contract = 0;
+        foreach($query as $res){
+          if ($res['type'] == '1') $partTime = $res['count(j.id)'];
+          if ($res['type'] == '0') $fullTime = $res['count(j.id)'];
+          if ($res['type'] == '2') $contract = $res['count(j.id)'];
+        }
+        $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j");
+        $return = [];
+        array_push($return, "Overall", $fullTime, $partTime, $contract, $averageAge[0]);
+        return $return;
       }
     }
 
