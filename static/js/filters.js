@@ -1,8 +1,6 @@
 /**
- * This class is responsible for handling all of filtering that goes with side bar * 
- * 
+ * This class is responsible for handling all of filtering that goes with side bar
  */
-
 function initFilters(updateMap, map) {
     var sticky = false;
     $('#sticky-toggle').click( function () {
@@ -60,7 +58,7 @@ function initFilters(updateMap, map) {
         url: '/api/getCategories',
         success : function (categories) {
             var el = $('#category-selection');
-	    // populates the categories drop box
+	        // populates the categories drop box
             for(var i = 0; i < categories.length; i++) {
                 if(categories[i].parentCategory != 0) {
                     continue;
@@ -71,8 +69,8 @@ function initFilters(updateMap, map) {
                 el.append(option);
             }
             el.change(function () {
-		// if the there is no filter or no selction has been made in the first drop box
-		// the second drop box is disabled.
+                // if the there is no filter or no selction has been made in the first drop box
+                // the second drop box is disabled.
                 var subEl = $('#subcategory-selection');
                 subEl.html('<option value="0">No Filter</option>');
                 if(el.val() == 0) {
@@ -80,7 +78,7 @@ function initFilters(updateMap, map) {
                 } else {
                     subEl.attr('disabled', null);
                     var parentId = el.val();
-		    // populates the sub catergories drop box
+                    // populates the sub catergories drop box
                     for(var i = 0; i < categories.length; i++) {
                         if(categories[i].parentCategory != parentId) {
                             continue;
@@ -90,13 +88,12 @@ function initFilters(updateMap, map) {
                         option.html(categories[i].name);
                         subEl.append(option);
                     }
-		subEl.change(function(){
-		$('#submit-button').click();
-		}).change();		  
-		}
-		$('#submit-button').click();
-	      
-	    }).change();
+                    subEl.change(function(){
+                        $('#submit-button').click();
+                    }).change();
+                }
+		        $('#submit-button').click();
+	        }).change();
         }
     });
     var getFilters = function () {
@@ -133,13 +130,13 @@ function initFilters(updateMap, map) {
 
      // handles the mouse event when a user clicks on the map canvas
     $('#map-canvas').mousedown(function () {
-      // if the sticky option is enabled then the side bar will stay there
-      if (sticky) {
+        // if the sticky option is enabled then the side bar will stay there
+        if (sticky) {
             return;
-      }
-      $('.filters').animate({
-	left: '-405px'
-      });
+        }
+        $('.filters').animate({
+            left: '-405px'
+        });
     });
 
 
@@ -148,11 +145,10 @@ function initFilters(updateMap, map) {
     // to the server. 
     $('#submit-button').click(function () {
         var body = $('body')[0];
-	// creates a spinner to indicate the page is loading
+	    // creates a spinner to indicate the page is loading
         var spinner = new Spinner().spin(body);
         var overlay = $('<div id="overlay"></div>')
         overlay.appendTo(body);
-
         $.ajax({
             url: '/api/list',
             data: getFilters(),
