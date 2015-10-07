@@ -4,8 +4,16 @@
  */
 
 function initFilters(updateMap, map) {
+    var sticky = false;
+    $('#sticky-toggle').click( function () {
+        sticky = !sticky;
+        $('#sticky-toggle').css({
+            transform : 'rotate(' + (sticky ? -45 : 0) + 'deg)'
+        });
+    });
 
-     
+
+
     // This is responsible for selecting the step for the slider
     // based on the selection of the radio button.
     $('input.example').on('change', function() {
@@ -125,8 +133,8 @@ function initFilters(updateMap, map) {
 
      // handles the mouse event when a user clicks on the map canvas
     $('#map-canvas').mousedown(function () {
-      // if the sticky option is checked then the side bar will stay there
-      if ($('#sticky-sidebar')[0].checked) {
+      // if the sticky option is enabled then the side bar will stay there
+      if (sticky) {
             return;
       }
       $('.filters').animate({
