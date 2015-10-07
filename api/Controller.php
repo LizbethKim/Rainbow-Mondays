@@ -50,13 +50,13 @@ class Controller {
         $fakeJobId = $daoFakeCacheJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
         $fakeIcons = $daoFakeCacheJobs->query("SELECT icon_url FROM live_cache");
 
-        for($a = 0; $a < 5;$a++) {
+        for($a = 0; $a < 600;$a++) {
             $fakeJobs[] = array(
                 'id' => ++$fakeJobId,
                 'jobTitle' => "Test Job",
                 'icon_url' => (string)$fakeIcons[rand(0, count($fakeIcons))-1]['icon_url'],
                 'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
-                'listedTime' => time() + rand(10, 30) - (2*60)
+                'listedTime' => time() - (rand(0, 10) * 60)
             );
         }
         foreach($fakeJobs as $fakeJob) {
