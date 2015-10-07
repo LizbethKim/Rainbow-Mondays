@@ -170,7 +170,6 @@ class Controller {
         }
       }
       $daoJobs = new DAO('jobs');
-      $result2 = [];
       if ($cat != 0 && $level == 0){
         $result2 = $daoJobs->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat GROUP BY type");
         $result2 = array_filter($result2);

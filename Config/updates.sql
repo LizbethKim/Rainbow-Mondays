@@ -9,3 +9,4 @@ CREATE TABLE regions
   lat INT NOT NULL
 );
 ALTER TABLE jobs ADD COLUMN `type` int(1);
+ALTER TABLE live_cache ADD COLUMN `icon_url` text;
