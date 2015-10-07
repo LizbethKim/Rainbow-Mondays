@@ -27,6 +27,8 @@ function initFilters(updateMap, map) {
 	    }
 
     });
+	
+	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
     // creates the slider it uses linux time as the server
     // this is due to the server that runs our website is using linux
@@ -36,9 +38,9 @@ function initFilters(updateMap, map) {
         max: ((new Date()).getTime() / 1000),
         step: (4*7*24*60*60),
         slide: function( event, ui ) {
-            var month = new Date(ui.value*1000).getMonth().toLocaleString();
-            var year = new Date(ui.value*1000).getFullYear().toLocaleString();
-            $("#amount").val(month+ " / " + year);
+            var month = monthNames[new Date(ui.value*1000).getMonth().toLocaleString()];
+            var year = new Date(ui.value*1000).getFullYear().toLocaleString().replace(",", "");
+            $("#amount").val(month+ " " + year);
 		
         },
 		change: function(event, ui){
@@ -48,9 +50,9 @@ function initFilters(updateMap, map) {
     
 	// creates the inital value to be displayed for the time slider
 	var value = ((new Date()).getTime() / 1000);
-	var month = new Date(value*1000).getMonth().toLocaleString();
-	var year = new Date(value*1000).getFullYear().toLocaleString();
-	$("#amount").val(month+ " / " + year);
+	var month = monthNames[new Date(value*1000).getMonth().toLocaleString()];
+	var year = new Date(value*1000).getFullYear().toLocaleString().replace(",", "");
+	$("#amount").val(month+ " " + year);
 	
 	// retrieves the catergories from the server then populates the drop boxes with 
 	// the correct values based on what has been recieved from the trade me servers
