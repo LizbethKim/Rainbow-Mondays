@@ -50,7 +50,7 @@ class Controller {
         $fakeJobId = $daoFakeCacheJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
         $fakeIcons = $daoFakeCacheJobs->query("SELECT icon_url FROM live_cache");
 
-        for($a = 0; $a < 600;$a++) {
+        for($a = 0; $a < 50;$a++) {
             $fakeJobs[] = array(
                 'id' => ++$fakeJobId,
                 'jobTitle' => "Test Job",
@@ -74,12 +74,12 @@ class Controller {
         $ids = $daoFakeSearches->query("SELECT id from districts");
         $categories = $daoFakeSearches->query('SELECT categoryName FROM categories');
 
-        for($a = 0; $a < 5; $a++){
+        for($a = 0; $a < 50; $a++){
             $fakeSearches[] = array(
                 'serach_term' => (string) $searches[rand(0, count($searches))-1]['jobTitle'],
                 'category' => (string) $categories[rand(0, count($categories))-1]['categoryName'],
                 'sub_category' => (string) $categories[rand(0, count($categories))-1]['categoryName'],
-                'time_searched' => time() + rand(10, 30) - (2*60),
+                'time_searched' => time() - (rand(0, 10 * 60)),
                 'locationId' => (int)$ids[rand(0, count($ids))]['id']
             );
         }

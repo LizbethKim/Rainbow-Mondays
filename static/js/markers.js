@@ -75,8 +75,9 @@ function initMapMarkers(map) {
                 var marker = new google.maps.Marker({
                     position: {
                         lng: parseFloat(searcheData[i]["longitude"]),
-                        lat: parseFloat(searcheData[i]["latitude"]),
+                        lat: parseFloat(searcheData[i]["latitude"])
                     },
+                    icon: '../static/images/search.png',
                     animation: google.maps.Animation.BOUNCE,
                     map: map
                 });
