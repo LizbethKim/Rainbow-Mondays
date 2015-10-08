@@ -142,7 +142,7 @@ class Controller {
         }
         $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j");
         $return = [];
-        array_push($return, "Overall", $fullTime, $partTime, $contract, $averageAge[0]);
+        array_push($return, "New Zealand", $fullTime, $partTime, $contract, $averageAge[0]);
         return $return;
       } else {
         $daoJobz = new DAO('jobs');
@@ -170,8 +170,7 @@ class Controller {
           if ($res['type'] == '2') $contract = $res['count(j.id)'];
         }
         $averageAge = $daoJobz->query("SELECT avg(listedTime) from jobs j");
-        $district = "Overall";
-        if ($level != 0) $district = $currRegion;
+        $district = $currRegion;
         $return = [];
         array_push($return, $district, $fullTime, $partTime, $contract, $averageAge[0]);
         return $return;
