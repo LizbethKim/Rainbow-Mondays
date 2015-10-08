@@ -195,7 +195,7 @@ class Jobs {
 
             $latest_job = $dao_liveCache->query("select max(listedTime) as maxTime from live_cache;");
             if(is_array($latest_job) && count($latest_job)) {
-                $lastTime = (int)$latest_job[0]['listedTime'];
+                $lastTime = (int)$latest_job[0]['maxTime'];
             } else {
                 $lastTime = (int)0;
             }
