@@ -79,12 +79,14 @@ $(function () {
         if (subCat == 0) {
             subCat = cat;
         }
+        var lvl = 0;
+        if (zoomedIn) lvl = 1;
         return {
             category: subCat,
             time: $('#timeslider-input').val(),
             lat: x,
             lng: y,
-            level: 0
+            level: lvl
         }
     };
 
@@ -109,27 +111,45 @@ $(function () {
     var mouseMoveTimer = 0;
     var infoPanel = $(".info");
     var updateStats = function(event){
-        posX = event.latLng.lat();
-        posY = event.latLng.lng();
+      if (event){
+          posX = event.latLng.lat();
+          posY = event.latLng.lng();
+          $.ajax({
+              url: '/api/getInfo',
+              data: getCenter(posX, posY),
+              method: "post",
+              success: function(resp){
+                $(".info").html("<table><tr><td colspan = '2'><b>"+resp[3]+"</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
+          + (parseInt(resp[0])
+          + parseInt(resp[1])
+          + parseInt(resp[2])) + "</div></td></tr>"
+          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
+          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
+          + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
+          + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
+                $(".info").css({
+                    left: event.pixel.x + 10,
+                    top: event.pixel.y + 10
+                }).show();
+              }
+          });
+        }
         $.ajax({
-            url: '/api/getInfo',
-            data: getCenter(posX, posY),
-            method: "post",
-            success: function(resp){
-              $(".info").html("<table><tr><td colspan = '2'><b>"+resp[3]+"</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
-        + (parseInt(resp[0])
-        + parseInt(resp[1])
-        + parseInt(resp[2])) + "</div></td></tr>"
-        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
-        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
-        + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
-        + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
-        + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
-              $(".info").css({
-                  left: event.pixel.x + 10,
-                  top: event.pixel.y + 10
-              }).show();
-            }
+          url: '/api/getOverallInfo',
+          data: getOverallCenter(),
+          method: "post",
+          success: function(resp){
+            $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>New Zealand</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
+            + (parseInt(resp[1])
+            + parseInt(resp[2])
+            + parseInt(resp[3])) + "</div></td></tr>"
+            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
+            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
+            + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
+            + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
+          }
         });
 
     };
@@ -149,6 +169,8 @@ $(function () {
             mouseMoveTimer = setTimeout(updateStats.bind(this, arguments[0]), 500);
         }
     });
+    map.addListener('mouseup', updateStats);
+    map.addListener('zoom_changed', updateStats);
     $(document).mousemove(function(event){
         infoPanel.hide();
     });
