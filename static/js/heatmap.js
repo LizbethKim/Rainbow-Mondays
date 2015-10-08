@@ -135,6 +135,7 @@ $(function () {
 
     var mouseDown = false;
     map.addListener('mousedown', function () {
+        clearTimeout(mouseMoveTimer);
         mouseDown = true;
     });
     map.addListener('mouseup', function () {

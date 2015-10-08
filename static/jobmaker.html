@@ -13,6 +13,7 @@
         <div>
             <button id="bt1">Make Jobs</button>
             <button id="bt2">Make Live Jobs</button>
+            <button id="bt3">Make Searches</button>
         </div>
     </body>
 
@@ -39,6 +40,19 @@
                     }
                     else{
                         alert("Fake jobs have successfully been inserted!");
+                    }
+                }
+            });
+        });
+        $("#bt3").click(function() {
+            $.ajax({
+                url: "/api/makeSearches",
+                success: function(response){
+                    if(response.error){
+                        alert("failed to insert 'fake searches'");
+                    }
+                    else{
+                        alert("Fake searches have successfully been inserted!");
                     }
                 }
             });
