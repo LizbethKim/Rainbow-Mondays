@@ -268,15 +268,9 @@ $(function () {
     map.addListener('dragend', function () {
         var center = map.getCenter();
         var blenheim = new google.maps.LatLng(-41.5134425,172.4039653);
-        console.log("lat: " + (center.lat() - blenheim.lat()));
-        console.log("lng: " + (center.lng() - blenheim.lng()));
 
         if(Math.abs((center.lat() - blenheim.lat())) > 7.5 || Math.abs((center.lng() - blenheim.lng())) > 7.9){
-
-            console.log("over 10 from lat or long");
-
                 map.panTo(blenheim);
-
         }
 
     });
