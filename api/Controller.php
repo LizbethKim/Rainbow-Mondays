@@ -67,6 +67,30 @@ class Controller {
         ));
     }
 
+    public function makePreQuakeDataAction(){
+        $daoFakeCacheJobs = new DAO('jobs');
+        $fakeJobs = array ();
+        $ids = $daoFakeCacheJobs->query("SELECT id from districts");
+        $fakeJobId = $daoFakeCacheJobs->query('SELECT max(id) as maxJobId from jobs')[0]['maxJobId'];
+        $fakeIcons = $daoFakeCacheJobs->query("SELECT icon_url FROM live_cache");
+
+        for($a = 0; $a < 50;$a++) {
+            $fakeJobs[] = array(
+                'id' => ++$fakeJobId,
+                'jobTitle' => "Test Job",
+                'icon_url' => (string)$fakeIcons[rand(0, count($fakeIcons))-1]['icon_url'],
+                'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
+                'listedTime' => time() - (rand(0, 10 * 60))
+            );
+        }
+        foreach($fakeJobs as $fakeJob) {
+            $daoFakeCacheJobs->insert($fakeJob);
+        }
+        return(array(
+            'error' => false
+        ));
+    }
+
     public function makeSearchesAction(){
         $daoFakeSearches = new DAO('searches');
         $fakeSearches = array();

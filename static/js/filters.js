@@ -106,7 +106,7 @@ function initFilters(updateMap, map) {
         }
         return ({
             category: subCat,
-            time: $('#timeslider-input').val()
+            time: $('#timeslider').slider('value')
         });
     };
 
@@ -157,9 +157,10 @@ function initFilters(updateMap, map) {
             method: 'post',
             success: function () {
                 updateMap.apply(this, arguments);
+            },
+            complete: function () {
+                $("#overlay").remove();
                 spinner.stop();
-               $("#overlay").remove();
-
             }
         });
     }).click();
