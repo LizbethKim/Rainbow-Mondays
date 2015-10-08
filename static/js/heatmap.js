@@ -131,9 +131,20 @@ $(function () {
         });
 
     };
+
+
+    var mouseDown = false;
+    map.addListener('mousedown', function () {
+        mouseDown = true;
+    });
+    map.addListener('mouseup', function () {
+        mouseDown = false;
+    });
     map.addListener('mousemove', function () {
         clearTimeout(mouseMoveTimer);
-        mouseMoveTimer = setTimeout(updateStats.bind(this, arguments[0]), 500);
+        if(!mouseDown) {
+            mouseMoveTimer = setTimeout(updateStats.bind(this, arguments[0]), 500);
+        }
     });
     $(document).mousemove(function(event){
         infoPanel.hide();
