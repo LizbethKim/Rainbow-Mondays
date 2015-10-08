@@ -213,9 +213,9 @@ $(function () {
           + (parseInt(resp[0])
           + parseInt(resp[1])
           + parseInt(resp[2])) + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
           + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
           + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
                 $(".info").css({
@@ -234,9 +234,9 @@ $(function () {
             + (parseInt(resp[1])
             + parseInt(resp[2])
             + parseInt(resp[3])) + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
             + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
             + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
           }
@@ -264,6 +264,23 @@ $(function () {
     $(document).mousemove(function(event){
         infoPanel.hide();
     });
+
+    map.addListener('dragend', function () {
+        var center = map.getCenter();
+        var blenheim = new google.maps.LatLng(-41.5134425,172.4039653);
+        console.log("lat: " + (center.lat() - blenheim.lat()));
+        console.log("lng: " + (center.lng() - blenheim.lng()));
+
+        if(Math.abs((center.lat() - blenheim.lat())) > 7.5 || Math.abs((center.lng() - blenheim.lng())) > 7.9){
+
+            console.log("over 10 from lat or long");
+
+                map.panTo(blenheim);
+
+        }
+
+    });
+
 
     $.ajax({
       url: '/api/getOverallInfo',
