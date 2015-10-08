@@ -140,7 +140,7 @@ $(function () {
           data: getOverallCenter(),
           method: "post",
           success: function(resp){
-            $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>New Zealand</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
+            $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>"+resp[0]+"</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
             + (parseInt(resp[1])
             + parseInt(resp[2])
             + parseInt(resp[3])) + "</div></td></tr>"
@@ -180,7 +180,7 @@ $(function () {
       data: getOverallCenter(),
       method: "post",
       success: function(resp){
-        $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>New Zealand</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
+        $(".overallInfo").html(/**resp[0]**/" <table><tr><td colspan = '2'><b>"+resp[0]+"</b></td></tr>" + "<tr><td>Total Jobs:</td><td><div class = 'align-right'>"
         + (parseInt(resp[1])
         + parseInt(resp[2])
         + parseInt(resp[3])) + "</div></td></tr>"
