@@ -79,7 +79,7 @@ class Jobs {
         $startTime = time() - 10*60;
         $endTime = time() - 5*60;
 
-        $jobs = $daoLiveCache->query("  SELECT id,listedTime, longitude, latitude, live_cache.jobTitle AS title, icon_url As icon
+        $jobs = $daoLiveCache->query("  SELECT live_cache.id as id,listedTime, longitude, latitude, live_cache.jobTitle AS title, icon_url As icon
                                         FROM  live_cache
                                         JOIN  districts
                                         ON    live_cache.locationId = districts.id
