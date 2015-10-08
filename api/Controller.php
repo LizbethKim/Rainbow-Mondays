@@ -160,7 +160,7 @@ class Controller {
             $currRegion = $region['name'];
           }
         }
-        $query = $daoJobz->query("SELECT count(j.id), max(batchid), type from jobs j join districts d on j.locationId = d.id where d.region_id = $currBest GROUP BY type");
+        $query = $daoJobz->query("SELECT count(j.id), max(batchid), type FROM jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest GROUP BY type");
         $partTime = 0;
         $fullTime = 0;
         $contract = 0;
