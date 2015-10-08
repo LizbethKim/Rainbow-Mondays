@@ -239,11 +239,10 @@ class Controller {
         if ($res['type'] == '0') $fullTime = $res['count(j.id)'];
         if ($res['type'] == '2') $contract = $res['count(j.id)'];
       }
-      if ($cat == 0){
+      if ($cat == 0 && $level == 0){
         $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest");
       } else {
         $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id WHERE d.region_id = $currBest AND j.categoryId = $cat");
-        $averageAge = array_filter($averageAge[0]);
         if (empty($averageAge[0])){
           $averageAge = $daoJobs->query("SELECT avg(listedTime) from jobs j JOIN districts d ON j.locationId = d.id JOIN categories c on j.categoryId = c.id WHERE d.region_id = $currBest AND c.parentCategoryId = $cat");
         }
