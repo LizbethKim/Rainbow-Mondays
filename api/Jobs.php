@@ -165,7 +165,11 @@ class Jobs {
         $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = $batchId {$conditions} group by locationId");
 
         $build = [];
-        $maxJobs = (int)$jobs[0]['count'];
+        if(count($jobs)) {
+            $maxJobs = (int)$jobs[0]['count'];
+        } else {
+            $maxJobs = 0;
+        }
         foreach($jobs as $job) {
             if($job['count'] > $maxJobs) {
                 $maxJobs = (int)$job['count'];
