@@ -165,7 +165,11 @@ class Jobs {
         $jobs = $daoJobs->query("select count(*) as 'count',jobs.* from jobs where batchId = $batchId {$conditions} group by locationId");
 
         $build = [];
-        $maxJobs = (int)$jobs[0]['count'];
+        if(count($jobs)) {
+            $maxJobs = (int)$jobs[0]['count'];
+        } else {
+            $maxJobs = 0;
+        }
         foreach($jobs as $job) {
             if($job['count'] > $maxJobs) {
                 $maxJobs = (int)$job['count'];
@@ -193,13 +197,21 @@ class Jobs {
 
             $dao_liveCache = new DAO("live_cache");
 
+            $latest_job = $dao_liveCache->query("select max(listedTime) as maxTime from live_cache;");
+            if(is_array($latest_job) && count($latest_job)) {
+                $lastTime = (int)$latest_job[0]['maxTime'];
+            } else {
+                $lastTime = (int)0;
+            }
+
+
             $api = new TrademeJobsApi();
             $api->setConsumerKey(CONSUMER_KEY);
             $api->setSignature(SIGNATURE);
             $api->runQuery();
 
             foreach ($api as $job) {
-                if ($job->getListedTime() <= time() - 10*60) {
+                if ($job->getListedTime() == $lastTime || $job->getListedTime() <= time() - 10*60) {
                     break;
                 }
                 $dataset = $job->getLiveDataset();

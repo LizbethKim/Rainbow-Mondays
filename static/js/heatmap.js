@@ -40,8 +40,98 @@ $(function () {
             var b = map.getBounds();
             return b;
     };
+	
+	  var customMapType = new google.maps.StyledMapType(
+	[
+		{
+			"featureType": "administrative",
+			"elementType": "labels.text.fill",
+			"stylers": [
+				{
+					"color": "#444444"
+				}
+			]
+		},
+		{
+			"featureType": "landscape",
+			"elementType": "all",
+			"stylers": [
+				{
+					"color": "#f2f2f2"
+				}
+			]
+		},
+		{
+			"featureType": "poi",
+			"elementType": "all",
+			"stylers": [
+				{
+					"visibility": "off"
+				}
+			]
+		},
+		{
+			"featureType": "road",
+			"elementType": "all",
+			"stylers": [
+				{
+					"saturation": -100
+				},
+				{
+					"lightness": 45
+				}
+			]
+		},
+		{
+			"featureType": "road.highway",
+			"elementType": "all",
+			"stylers": [
+				{
+					"visibility": "simplified"
+				}
+			]
+		},
+		{
+			"featureType": "road.arterial",
+			"elementType": "labels.icon",
+			"stylers": [
+				{
+					"visibility": "off"
+				}
+			]
+		},
+		{
+			"featureType": "transit",
+			"elementType": "all",
+			"stylers": [
+				{
+					"visibility": "off"
+				}
+			]
+		},
+		{
+			"featureType": "water",
+			"elementType": "all",
+			"stylers": [
+				{
+					"color": "#46bcec"
+				},
+				{
+					"visibility": "on"
+				}
+			]
+		}
+	],
+	{
+      name: 'Custom Style'
+	});
+	
+	var customMapTypeId = 'custom_style';
 
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	
+	map.mapTypes.set(customMapTypeId, customMapType);
+	map.setMapTypeId(customMapTypeId);
 
     $(window).bind('mousewheel', function(event) {
         if (event.originalEvent.wheelDelta >= 0) {
@@ -123,9 +213,9 @@ $(function () {
           + (parseInt(resp[0])
           + parseInt(resp[1])
           + parseInt(resp[2])) + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
-          + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">PartTime: </td><td><div class = 'align-right'>" + resp[0] + "</div></td></tr>"
+          + "<tr><td style=\"padding-left: 20px\">Contract Jobs: </td><td><div class = 'align-right'>" +resp[2] + "</div></td></tr>"
           + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
           + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
                 $(".info").css({
@@ -144,9 +234,9 @@ $(function () {
             + (parseInt(resp[1])
             + parseInt(resp[2])
             + parseInt(resp[3])) + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
-            + "<tr><td>&nbsp; &nbsp; &nbsp; &nbsp; Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">FullTime: </td><td><div class = 'align-right'>" + resp[1] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">PartTime: </td><td><div class = 'align-right'>" + resp[2] + "</div></td></tr>"
+            + "<tr><td style=\"padding-left: 20px\">Contract Jobs: </td><td><div class = 'align-right'>" +resp[3] + "</div></td></tr>"
             + "<tr><td>Average Age of Listing: </td><td><div class = 'align-right'><div class = 'align-right'>"
             + ((Date.now()/1000 - parseInt(resp[4]['avg(listedTime)']))/(60 * 60 * 24)).toFixed(2) + " days </div></td></tr></table>");
           }
@@ -174,6 +264,17 @@ $(function () {
     $(document).mousemove(function(event){
         infoPanel.hide();
     });
+
+    map.addListener('dragend', function () {
+        var center = map.getCenter();
+        var blenheim = new google.maps.LatLng(-41.5134425,172.4039653);
+
+        if(Math.abs((center.lat() - blenheim.lat())) > 7.5 || Math.abs((center.lng() - blenheim.lng())) > 7.9){
+                map.panTo(blenheim);
+        }
+
+    });
+
 
     $.ajax({
       url: '/api/getOverallInfo',
