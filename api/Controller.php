@@ -56,7 +56,7 @@ class Controller {
                 'jobTitle' => "Test Job",
                 'icon_url' => (string)$fakeIcons[rand(0, count($fakeIcons))-1]['icon_url'],
                 'locationId' => (int)$ids[rand(0, count($ids))-1]['id'],
-                'listedTime' => time() - (rand(0, 10) * 60)
+                'listedTime' => time() - (rand(0, 10 * 60))
             );
         }
         foreach($fakeJobs as $fakeJob) {

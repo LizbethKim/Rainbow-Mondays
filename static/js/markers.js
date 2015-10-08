@@ -38,8 +38,6 @@ function initMapMarkers(map) {
         for (var i = 0; i < data[0].length; i++) {
             var cacheData = data[0];
             var timeSeconds = parseInt(cacheData[i]["listedTime"]) + (10 * 60);
-            console.log(timeSeconds);
-            //if (parseInt(((new Date()).getTime() / 1000) - (60 * 2)) == timeSeconds) {
             if (parseInt(((new Date()).getTime() / 1000)) == timeSeconds) {
                 var marker = new google.maps.Marker({
                     position: {
