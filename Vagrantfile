@@ -11,10 +11,10 @@ config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
     sudo apt-get install -y nginx mysql-server php5-fpm php5-mysql php5-curl
     sudo rm /etc/nginx/sites-enabled/*
-    sudo ln -s /vagrant/Config/rainbowmondays.co.nz /etc/nginx/sites-enabled/rainbowmondays.conf
-    mysql -paz -u root < /vagrant/Config/schema.sql    
+    sudo ln -s /vagrant/config/rainbowmondays.co.nz /etc/nginx/sites-enabled/rainbowmondays.conf
+    mysql -paz -u root < /vagrant/config/schema.sql
     sudo nginx -s reload
-    php5 /vagrant/api/OneTimeSetup/DownloadDistricts.php
-    php5 /vagrant/api/Cron/downloadJobs.php    
+    php5 /vagrant/api/setup/downloadDistricts.php
+    php5 /vagrant/api/cron/downloadJobs.php
 SHELL
 end

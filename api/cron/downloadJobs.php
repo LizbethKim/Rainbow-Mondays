@@ -1,5 +1,5 @@
 <?php
-include(dirname(__FILE__) . '/../config.php');
+include(dirname(__FILE__) . '/../../config/global_config.php');
 
 $api = new TrademeJobsApi();
 $api->setConsumerKey(CONSUMER_KEY);

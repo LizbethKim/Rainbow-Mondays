@@ -1,5 +1,5 @@
 <?php
-include(dirname(__FILE__) . '/../config.php');
+include(dirname(__FILE__) . '/../../config.php');
 
 $dao = new DAO('districts');
 $dao_regions = new DAO('regions');
