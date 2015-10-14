@@ -38,9 +38,8 @@ function initFilters(updateMap, map) {
     $('#reset-button').click(function () {
 		map.panTo(new google.maps.LatLng(-41,174));
 		map.setZoom(6);
-		$('#category-selection').val(0);
-		$('#subcategory-selection').val(0);
-		$('#submit-button').click();
+        $('#subcategory-selection').val(0);
+		$('#category-selection').val(0).change();
     });
 
      // handles the mouse event when a user clicks on the map canvas
