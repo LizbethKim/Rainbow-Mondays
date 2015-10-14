@@ -2,8 +2,8 @@
 include(dirname(__FILE__) . '/../config.php');
 
 $api = new TrademeJobsApi();
-$api->setConsumerKey('xxxxxxxxxxxxxxxxxxxxxxxxxx');
-$api->setSignature('xxxxxxxxxxxxxxxxxxxxxxxxxx');
+$api->setConsumerKey(CONSUMER_KEY);
+$api->setSignature(SIGNATURE);
 $api->updateJobCategories();
 $api->runQuery();
 
