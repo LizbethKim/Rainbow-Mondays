@@ -9,7 +9,7 @@ $api->runQuery();
 
 $daoJobs = new DAO('jobs');
 
-$result = $daoJobs->query("select max(batchId) as batchId from jobs")[0]['batchId'];
+$result = $daoJobs->query("select max(id) as batchId from batches");
 if(count($result) && isset($result[0]['batchId'])) {
     $batchId = (int)$result[0]['batchId'] + 1;
 } else {
