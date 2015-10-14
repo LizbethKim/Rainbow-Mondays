@@ -9,24 +9,6 @@ function initFilters(updateMap, map) {
             transform : 'rotate(' + (sticky ? -45 : 0) + 'deg)'
         });
     });
-
-
-
-    // This is responsible for selecting the step for the slider
-    // based on the selection of the radio button.
-    $('input.example').on('change', function() {
-    $('input.example').not(this).prop('checked', false);
-	    if ($('#slider-month')[0].checked) {
-		// This happens when the month radio button is ticked
-		$("#timeslider").slider("option", "step", (4*7*24*60*60));
-	       
-	    }else if ($('#slider-year')[0].checked) {
-		// this happens when the year button is checked
-		$("#timeslider").slider("option", "step", (365*24*60*60));
-	          
-	    }
-
-    });
 	
 	var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -37,22 +19,16 @@ function initFilters(updateMap, map) {
         min: ((new Date()).getTime() / 1000) - (6*12*4*7*24*60*60),
         max: ((new Date()).getTime() / 1000),
         step: (4*7*24*60*60),
-        slide: function( event, ui ) {
-            var month = monthNames[new Date(ui.value*1000).getMonth().toLocaleString()];
-            var year = new Date(ui.value*1000).getFullYear().toLocaleString().replace(",", "");
-            $("#amount").val(month+ " " + year);
-		
+        slide: function() {
+            var value = $("#timeslider").slider('value')
+            var month = monthNames[new Date(value*1000).getMonth().toLocaleString()];
+            var year = new Date(value*1000).getFullYear().toLocaleString().replace(",", "");
+            $("#amount").html(month+ " " + year);
         },
-		change: function(event, ui){
+		change: function(){
 			$('#submit-button').click();
 		}
-    });
-    
-	// creates the inital value to be displayed for the time slider
-	var value = ((new Date()).getTime() / 1000);
-	var month = monthNames[new Date(value*1000).getMonth().toLocaleString()];
-	var year = new Date(value*1000).getFullYear().toLocaleString().replace(",", "");
-	$("#amount").val(month+ " " + year);
+    }).slider('option', 'slide').call();
 	
 	// retrieves the catergories from the server then populates the drop boxes with 
 	// the correct values based on what has been recieved from the trade me servers
