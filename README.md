@@ -15,4 +15,4 @@ This project uses Vagrant for setup a development environment. To setup and run 
 5. Navigate back to the root of the project and run:
 ```vagrant up```
 
-6. To access the site navigate to [http://192.168.33.10]
+6. To access the site navigate to http://192.168.33.10
